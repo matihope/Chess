@@ -26,9 +26,21 @@ void Manager::reset() {
     getMutPieceAt('E', 8) = PieceType::BlackKing;
 }
 
-const PieceType& Manager::getPieceAt(char file, int rank) { return getMutPieceAt(file, rank); }
+const PieceType& Manager::getPieceAt(char file, int rank) {
+    return getPieceAt(Chess::Square(file, rank));
+}
+const PieceType& Manager::getPieceAt(Chess::Square pos) { return getMutPieceAt(pos); }
+
 PieceType& Manager::getMutPieceAt(char file, int rank) {
-    return m_board[(file - 'A') * 8 + rank - 1];
+    return getMutPieceAt(Chess::Square(file, rank));
+}
+
+PieceType& Manager::getMutPieceAt(Chess::Square pos) {
+    return m_board[(pos.file - 'A') * 8 + pos.rank - 1];
+}
+
+std::vector<Chess::Square> Manager::getAvailableMovesAt(Chess::Square pos) {
+    return {Chess::Square('A', 3), Chess::Square('A', 4)};
 }
 
 }  // namespace Chess

@@ -25,4 +25,6 @@ bool ChessScene::load() {
     return true;
 }
 
-void ChessScene::update(const float& dt) { Scene::update(dt); }
+void ChessScene::update(const float& dt) {
+    
+    Scene::update(dt); }

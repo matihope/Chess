@@ -1,7 +1,7 @@
 #include <Chess/Piece.hpp>
 #include <ResourceManager/ResourceManager.hpp>
+#include <iostream>
 
-// ChessPiece::ChessPiece
 namespace Chess {
 
 Piece::Piece() {

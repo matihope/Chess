@@ -33,7 +33,7 @@ bool Game::init(const std::string settingsPath) {
     m_window.create(sf::VideoMode(m_game_settings.data["window"]["width"],
                                   m_game_settings.data["window"]["height"]),
                     std::string(m_game_settings.data["window"]["title"]), sf::Style::Default,
-                    sf::ContextSettings(24, 8, 4));
+                    sf::ContextSettings(0, 0, 4));
     m_window.setVerticalSyncEnabled(m_game_settings.data["window"]["vsync"]);
 
     m_view.reset(sf::FloatRect(0.f, 0.f, m_game_settings.data["viewport"]["width"],
