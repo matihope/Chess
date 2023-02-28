@@ -35,7 +35,7 @@ class AnimatedSprite : public WorldEntity {
         void setTexture(const std::string& texture);
         const sf::Texture* getTexture() const;
         const sf::IntRect& getTextureRect() const;
-        void update(const float& dt) override;
+        void update(const float dt) override;
         void addAnimation(const Animation& newAnimation, const std::string& animationName);
         void play(const std::string& animationName);
         void pause();

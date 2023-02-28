@@ -9,7 +9,7 @@ void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // #endif
 }
 
-void Tile::update(const float& dt){
+void Tile::update(const float dt) {
     if(m_is_animated)
         m_sprite.update(dt);
 }

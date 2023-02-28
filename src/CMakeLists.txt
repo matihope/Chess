@@ -1,11 +1,9 @@
 set(GAME_SOURCES
-    Scene/MenuScene.cpp Scene/MenuScene.hpp
-    Scene/ChessScene.cpp Scene/ChessScene.hpp
-    Chess/Chess.hpp
-    Chess/Square.hpp
-    Chess/Tile.cpp Chess/Tile.hpp
-    Chess/Piece.cpp Chess/Piece.hpp
-    Chess/Manager.cpp Chess/Manager.hpp
+    Scene/MenuScene.cpp
+    Scene/ChessScene.cpp
+    Chess/Tile.cpp
+    Chess/Piece.cpp
+    Chess/Manager.cpp
 )
 
 add_library(Game ${GAME_SOURCES})

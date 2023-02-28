@@ -26,7 +26,7 @@ namespace GUI {
             void setFont(sf::Font* font);
             void setText(const std::string newText);
             void setTextSize(unsigned int newSize);
-            void update(const float& dt) override;
+            void update(const float dt) override;
             void draw(sf::RenderTarget& target, sf::RenderStates states) const;
             bool isPressed() const;
             void updateDefaultCollisionShape();

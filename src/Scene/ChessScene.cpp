@@ -11,20 +11,17 @@ bool ChessScene::load() {
             ct->setSize(100.f);
             Chess::Tile* chess_tile = ct.get();
             chess_tile->setSize(100.f);
-            chess_tile->setPosition(100.f * x, 100.f * y);
+            chess_tile->setPosition(100.f * (7-x), 100.f * (7-y));
+            chess_tile->setFlipped(true);
             m_board.push_back(chess_tile);
             addEntity(std::move(ct));
 
-            if ((x + y) % 2)
-                chess_tile->setColor(sf::Color(134, 166, 102));
-            else
-                chess_tile->setColor(sf::Color(255, 255, 221));
-            chess_tile->setPiece(m_chess_manager.getPieceAt('A' + x, 8 - y));
+            auto sq = Chess::Square('A' + x, 8 - y);
+            chess_tile->setSquare(sq);
+            chess_tile->setPiece(m_chess_manager.getPieceAt(sq));
         }
     }
     return true;
 }
 
-void ChessScene::update(const float& dt) {
-    
-    Scene::update(dt); }
+void ChessScene::update(const float dt) { Scene::update(dt); }

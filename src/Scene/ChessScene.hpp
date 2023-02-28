@@ -11,5 +11,5 @@ class ChessScene : public Scene {
 
    public:
     bool load();
-    void update(const float& dt) override;
+    void update(const float dt) override;
 };

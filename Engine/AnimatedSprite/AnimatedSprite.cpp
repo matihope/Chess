@@ -29,7 +29,7 @@ std::vector<std::string> const AnimatedSprite::getAnimationNames() const {
     return m_animation_names;
 }
 
-void AnimatedSprite::update(const float& dt){
+void AnimatedSprite::update(const float dt) {
     if(m_is_paused || m_animation_names.empty() || (*m_current_animation_ptr).frames.size() == 1)
         return;
 

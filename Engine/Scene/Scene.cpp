@@ -15,14 +15,14 @@ void Scene::cleanEntities() {
     }
 }
 
-void Scene::update(const float& dt){
+void Scene::update(const float dt) {
     for(const auto& layer : m_entity_pool){
         for(auto& entity : layer.second)
             entity->update(dt);
     }
 }
 
-void Scene::physicsUpdate(const float& dt){
+void Scene::physicsUpdate(const float dt) {
     for(const auto& layer : m_entity_pool){
         for(auto& entity : layer.second)
             entity->physicsUpdate(dt);

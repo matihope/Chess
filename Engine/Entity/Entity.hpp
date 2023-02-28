@@ -11,7 +11,7 @@ class Entity : public WorldEntity {
         sf::Sprite m_shadow;
 
     public:
-        virtual void update(const float& dt);
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+     virtual void update(const float dt);
+     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 };

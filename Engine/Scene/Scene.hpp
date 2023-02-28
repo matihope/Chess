@@ -18,8 +18,8 @@ class Scene {
         Game* getGame() const;
         virtual bool load() = 0;
         virtual void cleanEntities();
-        virtual void update(const float& dt);
-        virtual void physicsUpdate(const float& dt);
+        virtual void update(const float dt);
+        virtual void physicsUpdate(const float dt);
         virtual void draw(sf::RenderTarget& target);
         virtual void addEntity(std::unique_ptr<WorldEntity> entity, unsigned int drawOrder = 0);
         virtual void kill() {};

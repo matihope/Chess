@@ -23,7 +23,7 @@ class TileMap : public WorldEntity {
         bool reload();
         void draw(sf::RenderTarget& target, sf::RenderStates states) const;
         Tile getTileTemplate(unsigned int id) const;
-        void update(const float& dt) override;
+        void update(const float dt) override;
         std::vector<std::shared_ptr<Tile>>& getCollidableTiles();
         std::vector<std::shared_ptr<Tile>>& getYSortLayerTiles();
 };

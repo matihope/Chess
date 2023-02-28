@@ -17,6 +17,7 @@ set(ENGINE_SOURCES
     ResourceManager/ResourceManager.cpp
     WorldEntity/WorldEntity.cpp
     PhysicsManager/PhysicsManager.cpp
+    Clickable/Clickable.cpp
 )
 
 add_library(Engine ${ENGINE_SOURCES})

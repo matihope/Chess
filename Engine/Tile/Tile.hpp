@@ -13,7 +13,7 @@ class Tile : public WorldEntity {
 
     public:
         void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-        void update(const float& dt);
+        void update(const float dt);
         void setTexture(const std::string& texture);
         const sf::Texture* getTexture() const;
         void setTextureRect(const sf::IntRect& rectangle);

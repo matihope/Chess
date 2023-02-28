@@ -1,3 +1,4 @@
+
 #include <CollisionComponent/CollisionComponent.hpp>
 #include <Game/Game.hpp>
 #include <SFML/Graphics.hpp>
@@ -19,10 +20,11 @@ sf::Vector2f scaleToFit(const sf::Vector2f viewSize, const sf::Vector2u windowSi
     return scale;
 }
 
-Game::~Game() { m_window.close(); }
-
-bool Game::init(const std::string settingsPath) {
-    // initialize variables
+Game& Game::get() {
+    static Game instance;
+    return instance;
+}
+bool Game::Iinit(std::string settingsPath) {  // initialize variables
     if (!m_game_settings.load("settings.json")) {
         std::cout
             << "Could not load settings.json. Make sure settings.json is inside the src folder."
@@ -55,8 +57,10 @@ bool Game::init(const std::string settingsPath) {
 
     return true;
 }
+bool Game::init(const std::string settingsPath) { return get().Iinit(settingsPath); }
+Game::~Game() { get().m_window.close(); }
 
-void Game::draw() {
+void Game::Idraw() {
     m_window.clear(sf::Color(21, 21, 21));
 
     if (!m_scenes_stack.empty()) m_scenes_stack.top()->draw(m_window);
@@ -65,8 +69,9 @@ void Game::draw() {
 
     m_window.display();
 }
+void Game::draw() { get().Idraw(); }
 
-void Game::update() {
+void Game::Iupdate() {
     m_dt = m_clock.restart().asSeconds();
 
     if (!m_scenes_stack.empty()) {
@@ -92,27 +97,29 @@ void Game::update() {
     }
 }
 
+void Game::update() { get().Iupdate(); }
+
 bool Game::addScene(std::unique_ptr<Scene> newScene) {
-    newScene->addGame(this);
+    newScene->addGame(&get());
     bool returnValue = newScene->load();
-    m_scenes_stack.push(std::move(newScene));
+    get().m_scenes_stack.push(std::move(newScene));
     return returnValue;
 }
 
 void Game::popScene() {
-    m_scenes_stack.top()->kill();
-    m_scenes_stack.pop();
+    get().m_scenes_stack.top()->kill();
+    get().m_scenes_stack.pop();
 }
 
 bool Game::replaceTopScene(std::unique_ptr<Scene> newScene) {
-    m_scenes_stack.pop();
+    get().m_scenes_stack.pop();
     return addScene(std::move(newScene));
 }
 
 void Game::pollEvents() {
     sf::Event event;
-    while (m_window.pollEvent(event)) {
-        if (!m_scenes_stack.empty()) m_scenes_stack.top()->handleEvent(event);
+    while (get().m_window.pollEvent(event)) {
+        if (!get().m_scenes_stack.empty()) get().m_scenes_stack.top()->handleEvent(event);
 
         switch (event.type) {
             case sf::Event::Closed:
@@ -138,44 +145,41 @@ void Game::pollEvents() {
     }
 }
 
-bool Game::isRunning() const { return m_run; }
+bool Game::isRunning() { return get().m_run; }
 
-void Game::stop() { m_run = false; }
+void Game::stop() { get().m_run = false; }
 
-void Game::setPrintFPS(const bool& printFPS) { m_enable_print_fps = printFPS; }
+void Game::setPrintFPS(const bool& printFPS) { get().m_enable_print_fps = printFPS; }
 
-const sf::Vector2u Game::getWindowSize() const { return m_window.getSize(); }
+const sf::Vector2u Game::getWindowSize() { return get().m_window.getSize(); }
 
-const sf::Vector2u Game::getViewportSize() const {
-    return {m_game_settings.data["viewport"]["width"], m_game_settings.data["viewport"]["height"]};
+const sf::Vector2u Game::getViewportSize() {
+    return {get().m_game_settings.data["viewport"]["width"],
+            get().m_game_settings.data["viewport"]["height"]};
 }
 
-const sf::RenderWindow& Game::getRenderWindow() const { return m_window; }
+const sf::RenderWindow& Game::getRenderWindow() { return get().m_window; }
 
 void Game::updateViewportSize() {
-    sf::Vector2f viewportScale = scaleToFit(m_view.getSize(), getWindowSize());
-    m_view.setViewport(sf::FloatRect(
+    sf::Vector2f viewportScale = scaleToFit(get().m_view.getSize(), getWindowSize());
+    get().m_view.setViewport(sf::FloatRect(
         sf::Vector2f(0.5f - viewportScale.x / 2, 0.5f - viewportScale.y / 2), viewportScale));
-    m_window.setView(m_view);
+    get().m_window.setView(get().m_view);
 }
 
 sf::Vector2f Game::getMousePos() {
     return getRenderWindow().mapPixelToCoords(sf::Mouse::getPosition(getRenderWindow()));
 }
 
-sf::Font* Game::getFont() { return &m_font; }
+sf::Font* Game::getFont() { return &get().m_font; }
 
-sf::View* Game::getView() { return &m_view; }
+sf::View* Game::getView() { return &get().m_view; }
 
 void Game::setCameraCenter(const sf::Vector2f& pos) {
-    m_view.setCenter(pos);
-    m_window.setView(m_view);
+    get().m_view.setCenter(pos);
+    get().m_window.setView(get().m_view);
     // polsrodek
-    m_fps_label.setPosition(
+    get().m_fps_label.setPosition(
         pos - sf::Vector2f(384 / 2, 216 / 2) +
-        sf::Vector2f(float(m_game_settings.data["viewport"]["width"]) - 1, 1));  // a
+        sf::Vector2f(float(get().m_game_settings.data["viewport"]["width"]) - 1, 1));  // a
 }
-
-// bool Game::isRectInsideView(const sf::FloatRect& rect) const {
-//     return m_view.
-// }

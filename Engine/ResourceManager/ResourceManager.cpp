@@ -6,13 +6,11 @@ ResourceManager& ResourceManager::get() {
 }
 
 sf::Texture& ResourceManager::IgetTexture(const std::string path) {
-    ResourceManager& resourceManager = get();
-    if (!resourceManager.m_textures.contains(path)) {
-        resourceManager.m_textures[path] = sf::Texture();
-        resourceManager.m_textures[path].loadFromFile(path);
-        resourceManager.m_textures[path].setSmooth(true);
+    if (!m_textures.contains(path)) {
+        m_textures[path] = sf::Texture();
+        m_textures[path].loadFromFile(path);
     }
-    return resourceManager.m_textures[path];
+    return m_textures[path];
 }
 
 const sf::Texture& ResourceManager::getTexture(const std::string path) {

@@ -6,7 +6,7 @@
 #include <Game/Game.hpp>
 
 bool MenuScene::load() {
-    auto btn = std::make_unique<GUI::Button>(m_game->getFont(), "Play");
+    auto btn = std::make_unique<GUI::Button>(Game::getFont(), "Play");
     m_play_btn = btn.get();
     m_play_btn->setPosition(int(m_game->getViewportSize().x / 2), int(m_game->getViewportSize().y / 2));
     m_play_btn->setTextSize(64);
@@ -15,12 +15,11 @@ bool MenuScene::load() {
     return true;
 }
 
-void MenuScene::update(const float& dt) {
+void MenuScene::update(const float dt) {
     Scene::update(dt);
 
     if(m_play_btn->isPressed()) {
         auto gameScene = std::make_unique<ChessScene>();
         m_game->replaceTopScene(std::move(gameScene));
     }
-
 }
