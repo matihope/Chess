@@ -7,10 +7,9 @@ add_compile_definitions("DEBUG=$<CONFIG:Debug>")
 find_package(SFML 2 REQUIRED COMPONENTS window audio graphics system network)
 link_libraries(sfml-graphics sfml-window sfml-system)
 
-# LDtkLoader
-find_package(LDtkLoader)
-set_target_properties(LDtkLoader PROPERTIES IMPORTED_LOCATION "/usr/local/lib/libLDtkLoader.a")
-link_libraries(LDtkLoader)
+# Nlohmann json
+find_package(nlohmann_json 3.11.2 REQUIRED)
+link_libraries(nlohmann_json::nlohmann_json)
 
 if (MSVC)
     # warning level 4 and all warnings as errors
