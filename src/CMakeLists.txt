@@ -3,7 +3,8 @@ set(GAME_SOURCES
     Scene/ChessScene.cpp
     Chess/Tile.cpp
     Chess/Piece.cpp
-    Chess/Manager.cpp
+    Chess/GameOfChess.cpp
+    Chess/TileManager.cpp
 )
 
 add_library(Game ${GAME_SOURCES})

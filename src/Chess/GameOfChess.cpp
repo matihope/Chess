@@ -1,10 +1,10 @@
-#include <Chess/Manager.hpp>
+#include <Chess/GameOfChess.hpp>
 #include <iostream>
 
 namespace Chess {
-Manager::Manager() { reset(); }
+GameOfChess::GameOfChess() { reset(); }
 
-void Manager::reset() {
+void GameOfChess::reset() {
     // empty the board
     m_board.fill(PieceType::Empty);
 
@@ -26,20 +26,20 @@ void Manager::reset() {
     getMutPieceAt('E', 8) = PieceType::BlackKing;
 }
 
-const PieceType& Manager::getPieceAt(char file, int rank) {
+const PieceType& GameOfChess::getPieceAt(char file, int rank) {
     return getPieceAt(Chess::Square(file, rank));
 }
-const PieceType& Manager::getPieceAt(Chess::Square pos) { return getMutPieceAt(pos); }
+const PieceType& GameOfChess::getPieceAt(Chess::Square pos) { return getMutPieceAt(pos); }
 
-PieceType& Manager::getMutPieceAt(char file, int rank) {
+PieceType& GameOfChess::getMutPieceAt(char file, int rank) {
     return getMutPieceAt(Chess::Square(file, rank));
 }
 
-PieceType& Manager::getMutPieceAt(Chess::Square pos) {
+PieceType& GameOfChess::getMutPieceAt(Chess::Square pos) {
     return m_board[(pos.file - 'A') * 8 + pos.rank - 1];
 }
 
-std::vector<Chess::Square> Manager::getAvailableMovesAt(Chess::Square pos) {
+std::vector<Chess::Square> GameOfChess::getAvailableMovesAt(Chess::Square pos) {
     return {Chess::Square('A', 3), Chess::Square('A', 4)};
 }
 

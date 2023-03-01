@@ -5,7 +5,7 @@ ResourceManager& ResourceManager::get() {
     return instance;
 }
 
-sf::Texture& ResourceManager::IgetTexture(const std::string path) {
+sf::Texture& ResourceManager::getMutTexture(const std::string path) {
     if (!m_textures.contains(path)) {
         m_textures[path] = sf::Texture();
         m_textures[path].loadFromFile(path);
@@ -14,9 +14,9 @@ sf::Texture& ResourceManager::IgetTexture(const std::string path) {
 }
 
 const sf::Texture& ResourceManager::getTexture(const std::string path) {
-    return get().IgetTexture(path);
+    return getMutTexture(path);
 }
 
 void ResourceManager::setTextureSmooth(const std::string path, bool smooth) {
-    get().IgetTexture(path).setSmooth(smooth);
+    getMutTexture(path).setSmooth(smooth);
 }

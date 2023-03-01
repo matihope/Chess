@@ -2,7 +2,7 @@
 #include <ResourceManager/ResourceManager.hpp>
 
 TileMapLayer::TileMapLayer(const std::string& texturePath) {
-    m_texture = &ResourceManager::getTexture(texturePath);
+    m_texture = &ResourceManager::get().getTexture(texturePath);
 }
 
 bool TileMapLayer::createLayer(const std::vector<int>& ids, const unsigned int tileSize, const unsigned int gridWidth){

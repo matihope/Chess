@@ -5,7 +5,7 @@
 
 
 void AnimatedSprite::setTexture(const std::string& texture){
-    m_sprite.setTexture(ResourceManager::getTexture(texture));
+    m_sprite.setTexture(ResourceManager::get().getTexture(texture));
 }
 
 void AnimatedSprite::setTextureRect(const sf::IntRect& rect){

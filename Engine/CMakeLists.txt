@@ -5,10 +5,8 @@ set(ENGINE_SOURCES
     GUI/Label.cpp
     GUI/Button.cpp
     JsonBridge/JsonBridge.cpp
-    Scene/Scene.cpp
     TileMap/TileMap.cpp
     TileMap/TileMapLayer.cpp
-    Updatable/Updatable.cpp
     Entity/Entity.cpp
     CollisionComponent/CollisionComponent.cpp
     CollisionShape/CollisionShape.cpp
@@ -16,7 +14,6 @@ set(ENGINE_SOURCES
     Tile/Tile.cpp
     ResourceManager/ResourceManager.cpp
     WorldEntity/WorldEntity.cpp
-    PhysicsManager/PhysicsManager.cpp
     Clickable/Clickable.cpp
 )
 

@@ -1,12 +1,12 @@
 #pragma once
-#include <Scene/Scene.hpp>
 #include <GUI/GUI.hpp>
+#include <WorldEntity/WorldEntity.hpp>
 
-class MenuScene : public Scene {
+class MenuScene : public WorldEntity {
     GUI::Button* m_play_btn;
     std::unique_ptr<sf::Texture> background;
 
     public:
-        bool load();
-        void update(const float dt) override;
+     MenuScene();
+     void update(const float dt) override;
 };

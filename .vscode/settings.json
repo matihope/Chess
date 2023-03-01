@@ -102,6 +102,7 @@
         "any": "cpp",
         "span": "cpp",
         "typeindex": "cpp",
-        "__verbose_abort": "cpp"
+        "__verbose_abort": "cpp",
+        "complex": "cpp"
     }
 }

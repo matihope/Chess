@@ -1,7 +1,8 @@
+#include "Tile.hpp"
+
 #include <Chess/Tile.hpp>
 #include <Game/Game.hpp>
-#include <Scene/Scene.hpp>
-#include <iostream>
+#include <Scene/ChessScene.hpp>
 
 namespace Chess {
 Tile::Tile() : m_collision_shape(RectCollision(this)) {
@@ -9,8 +10,8 @@ Tile::Tile() : m_collision_shape(RectCollision(this)) {
     m_piece.setType(Chess::PieceType::Empty);
 
     m_flipped = false;
-    m_rank_label.setFont(Game::getFont());
-    m_file_label.setFont(Game::getFont());
+    m_rank_label.setFont(Game::get().getFont());
+    m_file_label.setFont(Game::get().getFont());
     m_rank_label.setTextSize(20);
     m_file_label.setTextSize(20);
     m_rank_label.setAlignment(GUI::HAlignment::LEFT, GUI::VAlignment::BOTTOM);
@@ -45,11 +46,10 @@ void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 }
 
 void Tile::update(const float dt) {
-    sf::Vector2f mousePos = Game::getMousePos();
+    sf::Vector2f mousePos = Game::get().getMousePos();
     if (m_collision_shape.contains(mousePos)) {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-            std::cout << "Pressed! My pos is: " << m_square.file << " " << m_square.rank
-                      << std::endl;
+            queueFree();
         }
     }
 }
@@ -68,6 +68,8 @@ void Tile::setSquare(Square square) {
 
     setLabel();
 }
+
+Square Tile::getSquare() { return m_square; }
 
 void Tile::setFlipped(bool flipped) {
     m_flipped = flipped;

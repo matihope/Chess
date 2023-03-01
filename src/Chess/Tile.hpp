@@ -6,6 +6,8 @@
 #include <SFML/Graphics.hpp>
 #include <WorldEntity/WorldEntity.hpp>
 
+class ChessScene;
+
 namespace Chess {
 class Tile : public WorldEntity {
     bool m_flipped;
@@ -15,7 +17,6 @@ class Tile : public WorldEntity {
     Square m_square;
     GUI::Label m_file_label;
     GUI::Label m_rank_label;
-
     void setLabel();
 
    public:
@@ -25,6 +26,7 @@ class Tile : public WorldEntity {
     void setColor(sf::Color color);
     void setSize(float size);
     void setSquare(Square square);
+    Square getSquare();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void setPiece(PieceType type);
     void clearPiece();

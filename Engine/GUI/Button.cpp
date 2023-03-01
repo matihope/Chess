@@ -1,6 +1,5 @@
 #include <GUI/Button.hpp>
 #include <Updatable/Updatable.hpp>
-#include <Scene/Scene.hpp>
 #include <Game/Game.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -46,7 +45,7 @@ namespace GUI {
     }
 
     void Button::update(const float dt) {
-            sf::Vector2f mousePos = Game::getMousePos();
+            sf::Vector2f mousePos = Game::get().getMousePos();
             m_is_highlighted = false;
 
             if (m_collision_shape->contains(mousePos)) {

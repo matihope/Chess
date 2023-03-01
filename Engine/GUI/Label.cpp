@@ -56,13 +56,14 @@ namespace GUI {
     void Label::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         states.transform *= getTransform();
         // debugs:
-        sf::RectangleShape test;
-        test.setFillColor(sf::Color::Transparent);
-        test.setOutlineThickness(1.f);
-        test.setOutlineColor(sf::Color::Red);
-        test.setSize(sf::Vector2f(m_text.getGlobalBounds().width, m_text.getGlobalBounds().height));
-        test.setPosition(m_text.getGlobalBounds().left, m_text.getGlobalBounds().top);
-        target.draw(test, states);
+        // sf::RectangleShape test;
+        // test.setFillColor(sf::Color::Transparent);
+        // test.setOutlineThickness(1.f);
+        // test.setOutlineColor(sf::Color::Red);
+        // test.setSize(sf::Vector2f(m_text.getGlobalBounds().width,
+        // m_text.getGlobalBounds().height)); test.setPosition(m_text.getGlobalBounds().left,
+        // m_text.getGlobalBounds().top); target.draw(test, states);
+        if (m_text.getString() == "") return;
         target.draw(m_text, states);
     }
 

@@ -6,14 +6,14 @@
 #include <vector>
 
 namespace Chess {
-class Manager {
+class GameOfChess {
    private:
     std::array<PieceType, 64> m_board;
     PieceType& getMutPieceAt(char file, int rank);
     PieceType& getMutPieceAt(Chess::Square pos);
 
    public:
-    Manager();
+    GameOfChess();
     void reset();
     const PieceType& getPieceAt(char file, int rank);
     const PieceType& getPieceAt(Chess::Square pos);

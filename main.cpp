@@ -4,16 +4,15 @@
 #include <Scene/MenuScene.hpp>
 
 int main(){
-
-    if(!Game::init("settings.json"))
-        return 1;
+    Game& game = Game::get();
+    if (!game.init("settings.json")) return 1;
 
     auto menuScene = std::make_unique<MenuScene>();
-    Game::addScene(std::move(menuScene));
+    game.addScene(std::move(menuScene));
 
-    while(Game::isRunning()){
-        Game::pollEvents();
-        Game::update();
-        Game::draw();
+    while (game.isRunning()) {
+        game.pollEvents();
+        game.update();
+        game.draw();
     }
 }

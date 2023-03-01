@@ -6,8 +6,7 @@
 #include <memory>
 #include <iostream>
 #include <stack>
-
-class Scene;
+#include <WorldEntity/WorldEntity.hpp>
 
 class Game {
 
@@ -24,38 +23,40 @@ class Game {
     sf::Clock m_clock;
     JsonBridge m_game_settings;
     sf::RenderWindow m_window;
-    std::stack<std::unique_ptr<Scene>> m_scenes_stack;
+    std::stack<std::unique_ptr<WorldEntity>> m_scenes_stack;
     sf::View m_view;
     sf::Font m_font;
     GUI::Label m_fps_label;
+    sf::Vector2f m_mouse_pos;
 
-    // internal methods
+    // it's a singleton after all
     Game(){};
+
+   public:
+    // some more singleton stuff
+    Game(Game& other) = delete;
+    void operator=(const Game&) = delete;
     static Game& get();
-    bool Iinit(std::string settingsPath);
-    void Idraw();
-    void Iupdate();
 
-
-    public:
-        ~Game();
-        static bool init(std::string settingsPath);
-        static void draw();
-        static void update();
-        static void pollEvents();
-        static void setPrintFPS(const bool& printFPS);
-        static void stop();
-        static bool isRunning();
-        static const sf::Vector2u getWindowSize();
-        static const sf::Vector2u getViewportSize();
-        static const sf::RenderWindow& getRenderWindow();
-        static void updateViewportSize();
-        static bool addScene(std::unique_ptr<Scene> newScene);
-        static bool replaceTopScene(std::unique_ptr<Scene> newScene);
-        static void popScene();
-        static sf::Vector2f getMousePos();
-        static sf::Font* getFont();
-        static sf::View* getView();
-        static bool isRectInsideView(const sf::FloatRect& rect);
-        static void setCameraCenter(const sf::Vector2f& pos);
+    // the rest
+    ~Game();
+    bool init(std::string settingsPath);
+    void draw();
+    void update();
+    void pollEvents();
+    void setPrintFPS(const bool& printFPS);
+    void stop();
+    bool isRunning();
+    const sf::Vector2u getWindowSize();
+    const sf::Vector2u getViewportSize();
+    const sf::RenderWindow& getRenderWindow();
+    void updateViewportSize();
+    void addScene(std::unique_ptr<WorldEntity> newScene);
+    void replaceTopScene(std::unique_ptr<WorldEntity> newScene);
+    void popScene();
+    sf::Vector2f getMousePos();
+    sf::Font* getFont();
+    sf::View* getView();
+    bool isRectInsideView(const sf::FloatRect& rect);
+    void setCameraCenter(const sf::Vector2f& pos);
 };

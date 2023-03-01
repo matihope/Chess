@@ -4,7 +4,7 @@
 namespace Chess {
 
 Piece::Piece() {
-    const sf::Texture& tex = ResourceManager::getTexture("../resources/chess_pieces.png");
+    const sf::Texture& tex = ResourceManager::get().getTexture("../resources/chess_pieces.png");
     m_sprite.setTexture(tex);
     m_sprite.setScale(100.0 / (tex.getSize().x / 6), 100.0 / (tex.getSize().y / 2));
     setType(PieceType::WhitePawn);

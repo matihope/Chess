@@ -1,15 +1,16 @@
 #pragma once
 #include <Chess/Chess.hpp>
 #include <GUI/GUI.hpp>
-#include <Scene/Scene.hpp>
+#include <WorldEntity/WorldEntity.hpp>
 #include <vector>
 
-class ChessScene : public Scene {
+class ChessScene : public WorldEntity {
    private:
     std::vector<Chess::Tile*> m_board;
-    Chess::Manager m_chess_manager;
+    Chess::GameOfChess m_chess_manager;
 
    public:
-    bool load();
+    ChessScene();
     void update(const float dt) override;
+    void tilePressed(Chess::Tile* tile);
 };
