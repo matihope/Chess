@@ -26,6 +26,7 @@ class Tile : public WorldEntity, public Clickable {
     void selfReleased();
     bool m_show_move_indicator;
     sf::CircleShape m_move_indicator;
+    float m_dot_percentage;
 
    public:
     Tile();

@@ -21,7 +21,7 @@ Tile::Tile() : m_collision_shape(RectCollision(this)) {
     m_show_move_indicator = false;
     m_move_indicator.setFillColor(sf::Color(21, 21, 21, 30));
     m_move_indicator.setPosition(50.f, 50.f);
-    setMoveIndicator(true);
+    m_dot_percentage = 17;
 }
 
 Tile::Tile(Square square) : Tile::Tile() { setSquare(square); }
@@ -99,8 +99,8 @@ void Tile::setMoveIndicator(bool show) {
             // m_move_indicator.setPosition();
             // m_move_indicator.setRadius(.f);
         } else {
-            m_move_indicator.setRadius(getSize() * 17.0f / 100.0f);
-            float pos = getSize() / 2 - getSize() * 17.0f / 200.0f;
+            m_move_indicator.setRadius(getSize() * m_dot_percentage / 100.0f);
+            float pos = getSize() / 2 - getSize() * m_dot_percentage / 100.0f;
             m_move_indicator.setPosition(pos, pos);
         }
     }
