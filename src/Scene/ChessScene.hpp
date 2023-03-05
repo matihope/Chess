@@ -6,11 +6,8 @@
 
 class ChessScene : public WorldEntity {
    private:
-    std::vector<Chess::Tile*> m_board;
-    Chess::GameOfChess m_chess_manager;
+    Chess::BoardManager* m_board;
 
    public:
     ChessScene();
-    void update(const float dt) override;
-    void tilePressed(Chess::Tile* tile);
 };

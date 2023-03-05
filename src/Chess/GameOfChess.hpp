@@ -1,4 +1,5 @@
 #pragma once
+#include <Chess/Tile.hpp>
 #include <Chess/Piece.hpp>
 #include <Chess/Square.hpp>
 #include <array>

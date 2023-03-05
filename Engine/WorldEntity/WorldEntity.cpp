@@ -1,6 +1,7 @@
 #include "WorldEntity.hpp"
 
 #include <WorldEntity/WorldEntity.hpp>
+#include <iostream>
 
 EntityID WorldEntity::id_counter = 0;
 
@@ -26,6 +27,7 @@ void WorldEntity::cleanEntities() {
 }
 
 void WorldEntity::update(const float dt) {
+    cleanEntities();
     for (const auto& layer : m_entity_pool) {
         for (auto& entity : layer.second) entity->update(dt);
     }
@@ -38,8 +40,10 @@ void WorldEntity::physicsUpdate(const float dt) {
 }
 
 void WorldEntity::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    states.transform *= getTransform();
+
     for (const auto& layer : m_entity_pool) {
-        for (auto& entity : layer.second) target.draw(*entity);
+        for (auto& entity : layer.second) target.draw(*entity, states);
     }
 }
 

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23.1)
 
-project(AdventurersLife VERSION 0.1.0)
+project(chess VERSION 0.1.0)
 add_compile_definitions("DEBUG=$<CONFIG:Debug>")
 
 # SFML

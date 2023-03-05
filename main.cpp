@@ -1,7 +1,7 @@
-#include <SFML/Graphics.hpp>
 #include <Game/Game.hpp>
-#include <memory>
+#include <SFML/Graphics.hpp>
 #include <Scene/MenuScene.hpp>
+#include <memory>
 
 int main(){
     Game& game = Game::get();

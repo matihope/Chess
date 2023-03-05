@@ -44,26 +44,27 @@ namespace GUI {
         #endif
     }
 
+    void Button::selfHovered() { m_label.setColor(m_color_hover); }
+    void Button::selfNotHovered() { m_label.setColor(m_color_normal); }
+    void Button::selfHeld() { m_label.setColor(m_color_highlight); }
+
     void Button::update(const float dt) {
-            sf::Vector2f mousePos = Game::get().getMousePos();
-            m_is_highlighted = false;
+            Clickable::update(dt);
+            //     sf::Vector2f mousePos = Game::get().getMousePos();
+            //     m_is_highlighted = false;
 
-            if (m_collision_shape->contains(mousePos)) {
-                m_label.setColor(m_color_hover);
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                    m_is_highlighted = true;
-                    m_label.setColor(m_color_highlight);
-                } else if (m_was_highlighted_previously) {
-                    m_is_pressed = true;
-                }
-            } else {
-                m_label.setColor(m_color_normal);
-            }
-            m_was_highlighted_previously = m_is_highlighted;
-    }
-
-    bool Button::isPressed() const {
-        return m_is_pressed;
+            //     if (m_collision_shape->contains(mousePos)) {
+            //         m_label.setColor(m_color_hover);
+            //         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            //             m_is_highlighted = true;
+            //             m_label.setColor(m_color_highlight);
+            //         } else if (m_was_highlighted_previously) {
+            //             m_is_pressed = true;
+            //         }
+            // } else {
+            //     m_label.setColor(m_color_normal);
+            // }
+            // m_was_highlighted_previously = m_is_highlighted;
     }
 
     // bool Button::isColliding(const sf::Vector2f pos) {
@@ -76,12 +77,14 @@ namespace GUI {
 
         sf::FloatRect bounds = getBounds();
         m_collision_shape = std::make_unique<RectCollision>(this, bounds.width, bounds.height);
+        setClickCollisionShape(m_collision_shape.get());
         m_collision_shape->setPosition(bounds.left, bounds.top);
         // m_collision_shape->move(getPosition()); // used to be here, idk why tho ;D
     }
 
     void Button::setCollisionShape(std::unique_ptr<RectCollision> shape) {
         m_has_custom_collision_shape = true;
+        setClickCollisionShape(shape.get());
         m_collision_shape = std::move(shape);
     }
 

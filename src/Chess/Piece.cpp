@@ -1,3 +1,5 @@
+#include "Piece.hpp"
+
 #include <Chess/Piece.hpp>
 #include <ResourceManager/ResourceManager.hpp>
 
@@ -7,7 +9,7 @@ Piece::Piece() {
     const sf::Texture& tex = ResourceManager::get().getTexture("../resources/chess_pieces.png");
     m_sprite.setTexture(tex);
     m_sprite.setScale(100.0 / (tex.getSize().x / 6), 100.0 / (tex.getSize().y / 2));
-    setType(PieceType::WhitePawn);
+    setType(PieceType::Empty);
 }
 Piece::Piece(PieceType type) : Piece() { setType(type); }
 
@@ -22,6 +24,7 @@ void Piece::setType(PieceType type) {
     m_sprite.setTextureRect(sf::IntRect(size * x, size * y, size, size));
 }
 
+const PieceType& Piece::getType() { return m_type; }
 void Piece::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform *= getTransform();
     target.draw(m_sprite, states);

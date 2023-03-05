@@ -28,6 +28,7 @@ class Piece : public WorldEntity {
     Piece();
     Piece(PieceType);
     void setType(PieceType);
+    const PieceType& getType();
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
 }  // namespace Chess

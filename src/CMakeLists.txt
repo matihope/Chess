@@ -4,7 +4,7 @@ set(GAME_SOURCES
     Chess/Tile.cpp
     Chess/Piece.cpp
     Chess/GameOfChess.cpp
-    Chess/TileManager.cpp
+    Chess/BoardManager.cpp
 )
 
 add_library(Game ${GAME_SOURCES})

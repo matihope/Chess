@@ -1,5 +1,6 @@
 #include <Chess/GameOfChess.hpp>
 #include <iostream>
+#include "GameOfChess.hpp"
 
 namespace Chess {
 GameOfChess::GameOfChess() { reset(); }
@@ -42,5 +43,4 @@ PieceType& GameOfChess::getMutPieceAt(Chess::Square pos) {
 std::vector<Chess::Square> GameOfChess::getAvailableMovesAt(Chess::Square pos) {
     return {Chess::Square('A', 3), Chess::Square('A', 4)};
 }
-
 }  // namespace Chess

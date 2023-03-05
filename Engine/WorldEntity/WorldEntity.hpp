@@ -4,6 +4,7 @@
 #include <Updatable/Updatable.hpp>
 #include <WorldEntity/WorldEntity.hpp>
 #include <list>
+#include <map>
 #include <memory>
 
 typedef unsigned long long EntityID;
@@ -25,7 +26,7 @@ class WorldEntity : public sf::Drawable, public sf::Transformable, public Updata
         void queueFree();
         const bool& isDying() const;
 
-        std::map<unsigned int, std::list<std::unique_ptr<WorldEntity>>> m_entity_pool;
+        std::map<uint, std::list<std::unique_ptr<WorldEntity>>> m_entity_pool;
 
        public:
         void addParent(WorldEntity* parent);
