@@ -5,6 +5,7 @@ set(GAME_SOURCES
     Chess/Piece.cpp
     Chess/GameOfChess.cpp
     Chess/BoardManager.cpp
+    Chess/FloatingPiece.cpp
 )
 
 add_library(Game ${GAME_SOURCES})
