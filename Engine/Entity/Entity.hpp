@@ -5,13 +5,13 @@
 #include <AnimatedSprite/AnimatedSprite.hpp>
 
 class Entity : public WorldEntity {
-    protected:
-        CollisionComponent* m_collision_shape;
-        AnimatedSprite m_animation;
-        sf::Sprite m_shadow;
+ protected:
+  CollisionComponent *m_collision_shape;
+  AnimatedSprite m_animation;
+  sf::Sprite m_shadow;
 
-    public:
-     virtual void update(const float dt);
-     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+ public:
+  void update(float dt) override;
+  void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 };

@@ -10,31 +10,39 @@
 typedef unsigned long long EntityID;
 
 class WorldEntity : public sf::Drawable, public sf::Transformable, public Updatable {
-    private:
-        static EntityID id_counter;
-        EntityID m_entityId;
+ private:
+  static EntityID id_counter;
+  EntityID m_entityId;
 
-        bool m_toKill = false;
-        WorldEntity* m_parent;
+  bool m_toKill = false;
+  WorldEntity *m_parent;
 
-       public:
-        WorldEntity();
-        virtual ~WorldEntity();
+ public:
+  WorldEntity();
+  ~WorldEntity() override = default;
 
-        EntityID getId() const;
+  EntityID getId() const;
 
-        void queueFree();
-        const bool& isDying() const;
+  void queueFree();
+  const bool &isDying() const;
 
-        std::map<uint, std::list<std::unique_ptr<WorldEntity>>> m_entity_pool;
+  std::map<uint, std::list<std::unique_ptr<WorldEntity>>> m_entity_pool;
 
-       public:
-        void addParent(WorldEntity* parent);
-        WorldEntity* getParent();
-        virtual void cleanEntities();
-        virtual void update(const float dt);
-        virtual void physicsUpdate(const float dt);
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-        virtual void addChild(std::unique_ptr<WorldEntity> entity, unsigned int drawOrder = 0);
-        virtual void handleEvent(const sf::Event& event){};
+ public:
+  void addParent(WorldEntity *parent);
+  WorldEntity *getParent();
+
+  void addChild(std::unique_ptr<WorldEntity> entity, unsigned int drawOrder = 0);
+  virtual void cleanEntities();
+  void update(float dt) override;
+  void physicsUpdate(float dt) override;
+  void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
+  virtual void onUpdate(float dt) {};
+
+  virtual void onPhysicsUpdate(float dt) {};
+
+  virtual void onDraw(sf::RenderTarget &target, sf::RenderStates states) const {};
+
+  virtual void handleEvent(const sf::Event &event) {};
 };

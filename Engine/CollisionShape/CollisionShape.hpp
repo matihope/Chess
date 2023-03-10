@@ -2,30 +2,32 @@
 #include <CollisionComponent/CollisionComponent.hpp>
 
 class CircleCollision : public CollisionComponent {
-    private:
-        float m_radius;
+ private:
+  float m_radius;
 
-    public:
-        CircleCollision(WorldEntity* parent);
-        CircleCollision(WorldEntity* parent, const float radius);
-        ~CircleCollision() {};
-        void setRadius(const float radius);
-        float getRadius() const;
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-        bool contains(const sf::Vector2f& point) const;
+ public:
+  explicit CircleCollision(WorldEntity *parent);
+  CircleCollision(WorldEntity *parent, float radius);
+
+  ~CircleCollision() override = default;
+  void setRadius(float radius);
+  float getRadius() const;
+  void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+  bool contains(const sf::Vector2f &point) const override;
 
 };
 
 class RectCollision : public CollisionComponent {
-    private:
-        sf::Vector2f m_size;
+ private:
+  sf::Vector2f m_size;
 
-    public:
-        RectCollision(WorldEntity* parent);
-        RectCollision(WorldEntity* parent, const float width, const float height);
-        ~RectCollision() {};
-        void setSize(const float width, const float height);
-        const sf::Vector2f& getSize() const;
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-        bool contains(const sf::Vector2f& point) const;
+ public:
+  explicit RectCollision(WorldEntity *parent);
+  RectCollision(WorldEntity *parent, float width, float height);
+
+  ~RectCollision() override = default;
+  void setSize(float width, float height);
+  const sf::Vector2f &getSize() const;
+  void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+  bool contains(const sf::Vector2f &point) const override;
 };
