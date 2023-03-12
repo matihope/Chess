@@ -12,6 +12,7 @@ Square::Square() {
 
 void Square::setPiece(std::unique_ptr<BasePiece> piece) {
   m_piece = std::move(piece);
+  m_piece->setSquare(this);
 }
 
 BasePiece *Chess::Square::getPiece() {
@@ -26,5 +27,9 @@ void Square::setPosition(Chess::Position pos) {
 
 std::unique_ptr<BasePiece> Square::popPiece() {
   return std::move(m_piece);
+}
+
+Position Square::getPosition() {
+  return m_position;
 }
 }

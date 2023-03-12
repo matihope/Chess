@@ -10,8 +10,7 @@ class Pawn : public BasePiece {
  public:
   Pawn(Color color);
   ~Pawn() override;
-  bool isMovePossible(Board &board, Position pos) override;
-  bool moveIfPossible(Board &board, Position pos) override;
+  bool isMovePossible(Board &board, Position end_pos) override;
  private:
   bool m_has_moved;
 };

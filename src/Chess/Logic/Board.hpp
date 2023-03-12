@@ -3,18 +3,19 @@
 #include <array>
 #include "Square.hpp"
 #include "Position.hpp"
+#include "Move.hpp"
 
 namespace Chess {
 class Board {
-  std::array<std::array<Square, 8>, 8> m_board;
-
  public:
   Board();
   void reset();
-  Square *getSquareAt(Position pos);
-  Square *getSquareAt(char file, uint rank);
-  BasePiece *getPieceAt(Position pos);
-  BasePiece *getPieceAt(char file, uint rank);
+  [[nodiscard]] Square *getSquareAt(Position pos);
+  [[nodiscard]] Square * getSquareAt(char file, uint rank);
+  [[nodiscard]] BasePiece *getPieceAt(Position pos);
+  [[nodiscard]] BasePiece *getPieceAt(char file, uint rank);
 
+ private:
+  std::array<std::array<Square, 8>, 8> m_board;
 };
 }  // namespace Chess

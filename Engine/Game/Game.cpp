@@ -75,11 +75,11 @@ void Game::update() {
   m_mouse_pos = getRenderWindow().mapPixelToCoords(sf::Mouse::getPosition(getRenderWindow()));
 
   if (!m_scenes_stack.empty()) {
-    //     m_physics_update_counter += m_dt;
-    // if (m_physics_update_counter >= m_physics_update_call_freq) {
-    //     m_scenes_stack.top()->physicsUpdate(m_physics_update_call_freq);
-    //     m_physics_update_counter -= m_physics_update_call_freq;
-    // }
+         m_physics_update_counter += m_dt;
+     if (m_physics_update_counter >= m_physics_update_call_freq) {
+         m_scenes_stack.top()->physicsUpdate(m_physics_update_call_freq);
+         m_physics_update_counter -= m_physics_update_call_freq;
+     }
     m_scenes_stack.top()->update(m_dt);
   }
 
@@ -111,7 +111,7 @@ void Game::replaceTopScene(std::unique_ptr<WorldEntity> newScene) {
 void Game::pollEvents() {
   sf::Event event;
   while (m_window.pollEvent(event)) {
-    // if (!m_scenes_stack.empty()) m_scenes_stack.top()->handleEvent(event);
+     if (!m_scenes_stack.empty()) m_scenes_stack.top()->handleEvent(event);
 
     switch (event.type) {
       case sf::Event::Closed:stop();
@@ -134,7 +134,7 @@ void Game::pollEvents() {
   }
 }
 
-bool Game::isRunning() { return m_run; }
+bool Game::isRunning() const { return m_run; }
 
 void Game::stop() { m_run = false; }
 

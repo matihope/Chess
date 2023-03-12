@@ -5,16 +5,19 @@
 #include <Chess/Logic/Board.hpp>
 #include <Chess/Logic/BasePiece.hpp>
 #include <Chess/BoardEntity.hpp>
+#include <Chess/Logic/Game.hpp>
+#include "Chess/Tile.hpp"
 
 class ChessScene : public WorldEntity {
  public:
   ChessScene();
  private:
   void updatePieces();
-  Chess::Board m_chess_board;
+  Chess::Game m_chess_game;
   BoardEntity *m_board_entity;
   const int BOARD_SIZE = 8;
   const float TILE_SIZE = 100.;
-
   void onUpdate(float dt) override;
+  std::array<Tile*, 64> m_tiles;
+
 };

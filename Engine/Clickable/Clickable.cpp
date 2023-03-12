@@ -17,6 +17,7 @@ void Clickable::update(float dt) {
   if (!m_collision_shape) return;
   sf::Vector2f mousePos = Game::get().getMousePos();
   m_is_held = false;
+  m_is_pressed = false;
 
   if (m_collision_shape->contains(mousePos)) {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {

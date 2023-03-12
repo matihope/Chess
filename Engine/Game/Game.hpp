@@ -46,7 +46,7 @@ class Game {
   void pollEvents();
   void setPrintFPS(const bool &printFPS);
   void stop();
-  bool isRunning();
+  bool isRunning() const;
   sf::Vector2u getWindowSize();
   sf::Vector2u getViewportSize();
   const sf::RenderWindow &getRenderWindow();

@@ -1,7 +1,6 @@
 #include "Board.hpp"
 #include "Position.hpp"
 #include "Pawn.hpp"
-#include <iostream>
 
 namespace Chess {
 Board::Board() {

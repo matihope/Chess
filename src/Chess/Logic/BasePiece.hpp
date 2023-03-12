@@ -6,6 +6,7 @@
 namespace Chess {
 
 class Board;
+class Square;
 
 enum class PieceType {
   King,
@@ -17,31 +18,35 @@ enum class PieceType {
 };
 
 enum class Color {
-  Black, White
+  White, Black
+};
+
+struct PieceInfo {
+  PieceType type;
+  Color color;
 };
 
 class BasePiece {
  private:
-  PieceType m_type;
-  Color m_color;
-  Position m_position;
+  PieceInfo m_info;
+  Square* m_my_square;
 
  public:
-  BasePiece(Color color);
+  explicit BasePiece(Color color);
   virtual ~BasePiece() = default;
   void setType(PieceType type);
-  PieceType getType() const;
+  [[nodiscard]] PieceType getType() const;
   void setColor(Color color);
-  Color getColor() const;
-
+  [[nodiscard]] Color getColor() const;
   Position getPosition();
+  void setSquare(Square *square);
+  Square *getSquare();
 
   // returns all possible moves of the piece
   std::vector<Position> getAvailableMoves(Board &board);
   // returns true if the piece can move to the position
   virtual bool isMovePossible(Board &board, Position position) = 0;
-  // returns true if the piece has successfully moved to the position
-  virtual bool moveIfPossible(Board &board, Position position);
 
+  [[nodiscard]] PieceInfo getInfo() const;
 };
 }  // namespace Chess

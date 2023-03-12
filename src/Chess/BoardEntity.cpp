@@ -72,8 +72,8 @@ void BoardEntity::setPieceOnSquare(Chess::Position position, Chess::PieceType ty
 
 void BoardEntity::setQuadPieceTexCoords(sf::Vertex *quad, Chess::PieceType type, Chess::Color color) {
   auto [tex_x, tex_y] = m_pieces_texture->getSize();
-  float y = (float) color * tex_y / 2.f;
   float x = (float) type * tex_x / 6.f;
+  float y = (float) color * tex_y / 2.f;
   quad[0].texCoords = sf::Vector2f(x, y);
   quad[1].texCoords = sf::Vector2f(x + tex_x / 6.f, y);
   quad[2].texCoords = sf::Vector2f(x + tex_x / 6.f, y + tex_y / 2.f);
@@ -82,6 +82,6 @@ void BoardEntity::setQuadPieceTexCoords(sf::Vertex *quad, Chess::PieceType type,
 
 sf::Vertex *BoardEntity::getPiecesQuadAt(Chess::Position position) {
   unsigned int x = position.file - 'A';
-  unsigned int y = position.rank - 1;
+  unsigned int y =  8 - position.rank;
   return &m_pieces_vertices[((y * BOARD_SIZE) + x) * 4];
 }

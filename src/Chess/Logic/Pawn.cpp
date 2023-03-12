@@ -13,16 +13,11 @@ Pawn::Pawn(Color color) : BasePiece(color) {
 
 Pawn::~Pawn() = default;
 
-bool Pawn::isMovePossible(Board &board, Position pos) {
+bool Pawn::isMovePossible(Board &board, Position end_pos) {
   Position my_pos = getPosition();
-  if (my_pos.rank - 1 == pos.rank)
+  if (my_pos.file == end_pos.file && my_pos.rank + 1 == end_pos.rank)
     return true;
   return false;
-}
-
-bool Pawn::moveIfPossible(Board &board, Position pos) {
-  m_has_moved = true;
-  return BasePiece::moveIfPossible(board, pos);
 }
 
 }
