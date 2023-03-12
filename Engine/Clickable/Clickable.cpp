@@ -24,11 +24,15 @@ void Clickable::update(float dt) {
       if (m_is_pressable) {
         m_is_held = true;
         onHold();
+        if(not m_was_held_prev and m_click_mode == ClickMode::PressOnClick)
+          makePress();
       }
     } else {
       m_is_pressable = true;
       if (m_was_held_prev) {
         m_is_pressed = true;
+        if(m_click_mode == ClickMode::PressOnRelease)
+          makePress();
         onRelease();
       } else {
         onHover();
@@ -45,4 +49,13 @@ void Clickable::setClickCollisionShape(CollisionComponent *collision_shape) {
   m_collision_shape = collision_shape;
 }
 
+void Clickable::setClickMode(Clickable::ClickMode new_mode) {
+  m_click_mode = new_mode;
+}
+
 bool Clickable::isPressed() const { return m_is_pressed; }
+
+void Clickable::makePress() {
+  m_is_pressed = true;
+  onPressed();
+}

@@ -11,6 +11,7 @@ class PieceView {
   explicit PieceView(BasePiece& piece);
   [[nodiscard]] PieceType getType() const;
   [[nodiscard]] Color getColor() const;
+  [[nodiscard]] PieceInfo getInfo() const;
  private:
   BasePiece& m_piece;
 };

@@ -8,6 +8,7 @@
 Tile::Tile(Chess::Position position) : m_collision_shape(RectCollision(this)) {
   m_position = position;
   setClickCollisionShape(&m_collision_shape);
+  setClickMode(Clickable::ClickMode::PressOnClick);
 }
 
 void Tile::setSize(float size) {
@@ -18,10 +19,6 @@ void Tile::onUpdate(float dt) {
   Clickable::update(dt);
 }
 
-void Tile::onRelease() {
-//  std::cout << m_position << '\n';
-}
-
 void Tile::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
   states.transform *= getTransform();
   target.draw(m_collision_shape, states);
@@ -29,4 +26,12 @@ void Tile::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
 
 Chess::Position Tile::getPosition() {
   return m_position;
+}
+
+bool Tile::isHighlighted() const {
+  return m_is_highlighted;
+}
+
+void Tile::onPressed() {
+  m_is_highlighted = true;
 }

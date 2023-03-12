@@ -16,7 +16,7 @@ class BoardEntity : public WorldEntity {
   void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
  private:
-  std::array<GUI::Label, 16> m_labels;
+  std::array<GUI::Label*, 16> m_labels{};
   const int BOARD_SIZE;
   const float TILE_SIZE;
   const sf::Texture *m_board_texture;

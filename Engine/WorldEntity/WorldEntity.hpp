@@ -17,6 +17,8 @@ class WorldEntity : public sf::Drawable, public sf::Transformable, public Updata
   bool m_toKill = false;
   WorldEntity *m_parent;
 
+  bool m_show;
+
  public:
   WorldEntity();
   ~WorldEntity() override = default;
@@ -28,7 +30,6 @@ class WorldEntity : public sf::Drawable, public sf::Transformable, public Updata
 
   std::map<uint, std::list<std::unique_ptr<WorldEntity>>> m_entity_pool;
 
- public:
   void addParent(WorldEntity *parent);
   WorldEntity *getParent();
 
@@ -45,4 +46,7 @@ class WorldEntity : public sf::Drawable, public sf::Transformable, public Updata
   virtual void onDraw(sf::RenderTarget &target, sf::RenderStates states) const {};
 
   virtual void handleEvent(const sf::Event &event) {};
+
+  void show();
+  void hide();
 };

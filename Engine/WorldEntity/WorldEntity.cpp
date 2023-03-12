@@ -5,7 +5,10 @@
 
 EntityID WorldEntity::id_counter = 0;
 
-WorldEntity::WorldEntity() : m_entityId(id_counter++) { m_parent = nullptr; }
+WorldEntity::WorldEntity() : m_entityId(id_counter++) {
+  m_parent = nullptr;
+  m_show = true;
+}
 
 EntityID WorldEntity::getId() const { return m_entityId; }
 
@@ -32,6 +35,7 @@ void WorldEntity::physicsUpdate(const float dt) {
 }
 
 void WorldEntity::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+  if(not m_show) return;
   sf::RenderStates copied_states(states);
   copied_states.transform *= getTransform();
   onDraw(target, states);
@@ -57,4 +61,12 @@ void WorldEntity::update(float dt) {
   for (const auto &layer : m_entity_pool) {
     for (auto &entity : layer.second) entity->update(dt);
   }
+}
+
+void WorldEntity::show() {
+  m_show = true;
+}
+
+void WorldEntity::hide() {
+  m_show = false;
 }

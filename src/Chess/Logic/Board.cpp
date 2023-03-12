@@ -1,6 +1,7 @@
 #include "Board.hpp"
 #include "Position.hpp"
 #include "Pawn.hpp"
+#include "Rook.hpp"
 
 namespace Chess {
 Board::Board() {
@@ -21,6 +22,11 @@ void Board::reset() {
     getSquareAt((char) ('A' + i), 2)->setPiece(std::move(pawn1));
     getSquareAt((char) ('A' + i), 7)->setPiece(std::move(pawn2));
   }
+  auto white_rook1 = std::make_unique<Rook>(Color::White);
+  auto white_rook2 = std::make_unique<Rook>(Color::White);
+  getSquareAt(Position('A', 1))->setPiece(std::move(white_rook1));
+  getSquareAt(Position('H', 1))->setPiece(std::move(white_rook2));
+
 
 //  getMutPieceAt('A', 1) = getMutPieceAt('H', 1) = PieceType::WhiteRook;
 //  getMutPieceAt('A', 8) = getMutPieceAt('H', 8) = PieceType::BlackRook;

@@ -15,8 +15,10 @@ Pawn::~Pawn() = default;
 
 bool Pawn::isMovePossible(Board &board, Position end_pos) {
   Position my_pos = getPosition();
-  if (my_pos.file == end_pos.file && my_pos.rank + 1 == end_pos.rank)
-    return true;
+  if(getColor() == Color::White)
+    if (my_pos.file == end_pos.file && my_pos.rank + 1 == end_pos.rank)
+      return true;
+
   return false;
 }
 

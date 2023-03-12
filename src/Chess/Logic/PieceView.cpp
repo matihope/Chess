@@ -15,3 +15,7 @@ Chess::PieceType Chess::PieceView::getType() const {
 Chess::Color Chess::PieceView::getColor() const {
   return m_piece.getColor();
 }
+
+Chess::PieceInfo Chess::PieceView::getInfo() const {
+  return m_piece.getInfo();
+}

@@ -7,6 +7,7 @@
 #include <Chess/BoardEntity.hpp>
 #include <Chess/Logic/Game.hpp>
 #include "Chess/Tile.hpp"
+#include "Chess/FloatingPiece.hpp"
 
 class ChessScene : public WorldEntity {
  public:
@@ -19,5 +20,7 @@ class ChessScene : public WorldEntity {
   const float TILE_SIZE = 100.;
   void onUpdate(float dt) override;
   std::array<Tile*, 64> m_tiles;
+  bool m_piece_is_floating;
+  FloatingPiece* m_floating_piece;
 
 };

@@ -11,6 +11,7 @@ MenuScene::MenuScene() : WorldEntity() {
     m_play_btn->setPosition(int(Game::get().getViewportSize().x / 2),
                             int(Game::get().getViewportSize().y / 2));
     m_play_btn->setTextSize(64);
+    m_play_btn->setClickMode(Clickable::ClickMode::PressOnRelease);
     addChild(std::move(btn));
 }
 

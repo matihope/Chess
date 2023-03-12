@@ -13,10 +13,12 @@ class Tile : public WorldEntity, public Clickable {
   explicit Tile(Chess::Position position);
   void setSize(float size);
   void onUpdate(float dt) override;
-  void onRelease() override;
+  void onPressed() override;
   void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
   Chess::Position getPosition();
+  bool isHighlighted() const;
  private:
   Chess::Position m_position;
   RectCollision m_collision_shape;
+  bool m_is_highlighted;
 };
