@@ -25,7 +25,7 @@ Color BasePiece::getColor() const {
 }
 
 Position BasePiece::getPosition() {
-  return m_my_square->getPosition();
+  return getSquare()->getPosition();
 }
 
 std::vector<Position> BasePiece::getAvailableMoves(Board &board) {
@@ -51,6 +51,11 @@ void BasePiece::setSquare(Square *square) {
 
 Square *BasePiece::getSquare() {
   return m_my_square;
+}
+
+bool BasePiece::_canCapturePos(Board &board, Position end_pos) const {
+  if (board.isSquareEmpty(end_pos)) return true;
+  return getColor() != board.getPieceAt(end_pos)->getColor();
 }
 
 }  // namespace Chess

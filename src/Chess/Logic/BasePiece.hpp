@@ -32,6 +32,10 @@ class BasePiece {
   PieceInfo m_info;
   Square *m_my_square;
 
+ protected:
+  // returns true if end_pos is free or has a piece of different color than getColor()
+  bool _canCapturePos(Board &board, Position end_pos) const;
+
  public:
   explicit BasePiece(Color color);
   virtual ~BasePiece() = default;
