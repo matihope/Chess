@@ -10,6 +10,6 @@ class Knight : public BasePiece {
  public:
   explicit Knight(Color color);
   ~Knight() override;
-  bool isMovePossible(Board &board, Position position) override;
+  bool isMovePossible(Board &board, Position end_pos) override;
 };
 }
