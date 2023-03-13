@@ -14,9 +14,13 @@ class BoardEntity : public WorldEntity {
   void setPieceOnSquare(Chess::Position position, Chess::PieceType type, Chess::Color color);
   void clearSquare(Chess::Position position);
   void onDraw(sf::RenderTarget &target, sf::RenderStates states) const override;
+  void setSquarePressed(Chess::Position position, bool highlight);
+
+  // sets square's color and other visuals to default
+  void setSquaresDefaultColors();
 
  private:
-  std::array<GUI::Label*, 16> m_labels{};
+  std::array<GUI::Label *, 16> m_labels{};
   const int BOARD_SIZE;
   const float TILE_SIZE;
   const sf::Texture *m_board_texture;
@@ -25,4 +29,5 @@ class BoardEntity : public WorldEntity {
   sf::VertexArray m_pieces_vertices;
   void setQuadPieceTexCoords(sf::Vertex *quad, Chess::PieceType type, Chess::Color color);
   sf::Vertex *getPiecesQuadAt(Chess::Position position);
+  sf::Vertex *getBoardQuadAt(Chess::Position position);
 };

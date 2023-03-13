@@ -2,6 +2,7 @@
 #include "Position.hpp"
 #include "Pawn.hpp"
 #include "Rook.hpp"
+#include "Knight.hpp"
 
 namespace Chess {
 Board::Board() {
@@ -26,6 +27,21 @@ void Board::reset() {
   auto white_rook2 = std::make_unique<Rook>(Color::White);
   getSquareAt(Position('A', 1))->setPiece(std::move(white_rook1));
   getSquareAt(Position('H', 1))->setPiece(std::move(white_rook2));
+
+  auto black_rook1 = std::make_unique<Rook>(Color::Black);
+  auto black_rook2 = std::make_unique<Rook>(Color::Black);
+  getSquareAt(Position('A', 8))->setPiece(std::move(black_rook1));
+  getSquareAt(Position('H', 8))->setPiece(std::move(black_rook2));
+
+  auto white_knight1 = std::make_unique<Knight>(Color::White);
+  auto white_knight2 = std::make_unique<Knight>(Color::White);
+  getSquareAt(Position('B', 1))->setPiece(std::move(white_knight1));
+  getSquareAt(Position('G', 1))->setPiece(std::move(white_knight2));
+
+  auto black_knight1 = std::make_unique<Knight>(Color::Black);
+  auto black_knight2 = std::make_unique<Knight>(Color::Black);
+  getSquareAt(Position('B', 8))->setPiece(std::move(black_knight1));
+  getSquareAt(Position('G', 8))->setPiece(std::move(black_knight2));
 
 
 //  getMutPieceAt('A', 1) = getMutPieceAt('H', 1) = PieceType::WhiteRook;
@@ -55,6 +71,10 @@ BasePiece *Board::getPieceAt(Position pos) {
 
 BasePiece *Board::getPieceAt(char file, uint rank) {
   return getSquareAt(file, rank)->getPiece();
+}
+
+bool Board::isSquareEmpty(Position pos) {
+  return getSquareAt(pos)->getPiece() == nullptr;
 }
 
 }  // namespace Chess

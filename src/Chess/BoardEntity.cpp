@@ -14,7 +14,7 @@ BoardEntity::BoardEntity(const int board_size, const float tile_size) : BOARD_SI
   m_pieces_texture = &ResourceManager::get().getTexture("../resources/chess_pieces.png");
 
   // prepare the labels
-  for(auto & label : m_labels) {
+  for (auto &label : m_labels) {
     auto label_ptr = std::make_unique<GUI::Label>();
     label = label_ptr.get();
     label->setFont(Game::get().getFont());
@@ -63,14 +63,14 @@ BoardEntity::BoardEntity(const int board_size, const float tile_size) : BOARD_SI
       quad[3].position = sf::Vector2f(x * TILE_SIZE, (y + 1) * TILE_SIZE);
 
       // and lastly, the labels
-      if(x == BOARD_SIZE - 1) {
+      if (x == BOARD_SIZE - 1) {
         // rank label
         GUI::Label &label = *m_labels[8 + y];
         label.setAlignment(GUI::HAlignment::RIGHT, GUI::VAlignment::TOP);
         label.setPosition((x + 1) * TILE_SIZE, y * TILE_SIZE);
-        label.move(-TILE_SIZE/20.f, TILE_SIZE/20.f);
-        label.setText(std::to_string(y + 1));
-        if(y % 2)
+        label.move(-TILE_SIZE / 20.f, TILE_SIZE / 20.f);
+        label.setText(std::to_string(8 - y));
+        if (y % 2)
           label.setColor(label_dark_color);
         else
           label.setColor(label_light_color);
@@ -80,9 +80,9 @@ BoardEntity::BoardEntity(const int board_size, const float tile_size) : BOARD_SI
         GUI::Label &label = *m_labels[x];
         label.setAlignment(GUI::HAlignment::LEFT, GUI::VAlignment::BOTTOM);
         label.setPosition(x * TILE_SIZE, (y + 1) * TILE_SIZE);
-        label.move(TILE_SIZE/20.f, -TILE_SIZE/20.f);
-        label.setText(std::string(1, (char)(x + 'a')));
-        if(x % 2)
+        label.move(TILE_SIZE / 20.f, -TILE_SIZE / 20.f);
+        label.setText(std::string(1, (char) (x + 'a')));
+        if (x % 2)
           label.setColor(label_dark_color);
         else
           label.setColor(label_light_color);
@@ -126,6 +126,40 @@ void BoardEntity::setQuadPieceTexCoords(sf::Vertex *quad, Chess::PieceType type,
 
 sf::Vertex *BoardEntity::getPiecesQuadAt(Chess::Position position) {
   unsigned int x = position.file - 'A';
-  unsigned int y =  8 - position.rank;
+  unsigned int y = 8 - position.rank;
   return &m_pieces_vertices[((y * BOARD_SIZE) + x) * 4];
+}
+
+sf::Vertex *BoardEntity::getBoardQuadAt(Chess::Position position) {
+  unsigned int x = position.file - 'A';
+  unsigned int y = 8 - position.rank;
+  return &m_board_vertices[((y * BOARD_SIZE) + x) * 4];
+}
+
+void BoardEntity::setSquaresDefaultColors() {
+  for (int x = 0; x < BOARD_SIZE; x++) {
+    for (int y = 0; y < BOARD_SIZE; y++) {
+      Chess::Position position(x + 'A', y + 1);
+      setSquarePressed(position, false);
+    }
+  }
+}
+
+void BoardEntity::setSquarePressed(Chess::Position position, bool highlight) {
+  sf::Vertex *quad = getBoardQuadAt(position);
+
+  // defaults
+  float x_pos = 0.f;
+  if ((position.file - 'A' + position.rank) % 2)
+    x_pos += 16.f;
+
+  // if highlighted then yellow
+  if (highlight)
+    x_pos = 32.f;
+
+  // apply
+  quad[0].texCoords = sf::Vector2f(x_pos, 0.f);
+  quad[1].texCoords = sf::Vector2f(x_pos + 16.f, 0.f);
+  quad[2].texCoords = sf::Vector2f(x_pos + 16.f, 16.f);
+  quad[3].texCoords = sf::Vector2f(x_pos, 16.f);
 }

@@ -28,10 +28,6 @@ Chess::Position Tile::getPosition() {
   return m_position;
 }
 
-bool Tile::isHighlighted() const {
-  return m_is_highlighted;
-}
-
-void Tile::onPressed() {
-  m_is_highlighted = true;
+bool Tile::contains(const sf::Vector2f point) const {
+  return m_collision_shape.contains(point);
 }

@@ -6,6 +6,7 @@
 namespace Chess {
 
 class Board;
+
 class Square;
 
 enum class PieceType {
@@ -29,7 +30,7 @@ struct PieceInfo {
 class BasePiece {
  private:
   PieceInfo m_info;
-  Square* m_my_square;
+  Square *m_my_square;
 
  public:
   explicit BasePiece(Color color);
