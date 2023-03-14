@@ -4,9 +4,14 @@
 
 #pragma once
 #include <WorldEntity/WorldEntity.hpp>
-#include <Chess/Logic/BasePiece.hpp>
+#include "Chess/Logic/Pieces/BasePiece.hpp"
 #include <GUI/Label.hpp>
 #include <array>
+
+enum SquareHighlightMode {
+  Default = 0b0,
+
+};
 
 class BoardEntity : public WorldEntity {
  public:

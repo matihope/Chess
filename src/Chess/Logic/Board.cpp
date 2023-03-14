@@ -1,8 +1,8 @@
 #include "Board.hpp"
 #include "Position.hpp"
-#include "Pawn.hpp"
-#include "Rook.hpp"
-#include "Knight.hpp"
+#include "Chess/Logic/Pieces/Pawn.hpp"
+#include "Chess/Logic/Pieces/Rook.hpp"
+#include "Chess/Logic/Pieces/Knight.hpp"
 
 namespace Chess {
 Board::Board() {

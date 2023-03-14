@@ -3,7 +3,7 @@
 //
 
 #include "Game.hpp"
-#include "Rook.hpp"
+#include "Chess/Logic/Pieces/Rook.hpp"
 
 Chess::Game::Game() {
   newGame();

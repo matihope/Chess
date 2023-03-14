@@ -4,7 +4,7 @@
 
 #pragma once
 #include <memory>
-#include "BasePiece.hpp"
+#include "Chess/Logic/Pieces/BasePiece.hpp"
 #include "Position.hpp"
 
 namespace Chess {

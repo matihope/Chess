@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Chess/Logic/BasePiece.hpp"
+#include "Chess/Logic/Pieces/BasePiece.hpp"
 #include "WorldEntity/WorldEntity.hpp"
 
 class FloatingPiece : public WorldEntity {
