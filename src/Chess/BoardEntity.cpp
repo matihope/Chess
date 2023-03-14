@@ -10,8 +10,37 @@ BoardEntity::BoardEntity(const int board_size, const float tile_size) : BOARD_SI
 
   // load textures
   ResourceManager::get().setTextureSmooth("../resources/chess_pieces.png", true);
-  m_board_texture = &ResourceManager::get().getTexture("../resources/chess_colors.png");
-  m_pieces_texture = &ResourceManager::get().getTexture("../resources/chess_pieces.png");
+  ResourceManager::get().setTextureSmooth("../resources/chess_marks.png", true);
+  const sf::Texture *board_texture = &ResourceManager::get().getTexture("../resources/chess_colors.png");
+  const sf::Texture *pieces_texture = &ResourceManager::get().getTexture("../resources/chess_pieces.png");
+  const sf::Texture *marks_texture = &ResourceManager::get().getTexture("../resources/chess_marks.png");
+
+  // set batches
+  // board
+  auto board_batch_ptr = std::make_unique<SpriteBatch>(board_texture);
+  m_board_batch = board_batch_ptr.get();
+  m_board_batch->makeGrid(sf::Vector2i(BOARD_SIZE, BOARD_SIZE), sf::Vector2f(TILE_SIZE, TILE_SIZE));
+  addChild(std::move(board_batch_ptr));
+  // pressed
+  auto pressed_batch_ptr = std::make_unique<SpriteBatch>(board_texture);
+  m_pressed_batch = pressed_batch_ptr.get();
+  m_pressed_batch->makeGrid(sf::Vector2i(BOARD_SIZE, BOARD_SIZE), sf::Vector2f(TILE_SIZE, TILE_SIZE));
+  addChild(std::move(pressed_batch_ptr));
+  // highlight
+  auto highlight_batch_ptr = std::make_unique<SpriteBatch>(board_texture);
+  m_highlight_batch = highlight_batch_ptr.get();
+  m_highlight_batch->makeGrid(sf::Vector2i(BOARD_SIZE, BOARD_SIZE), sf::Vector2f(TILE_SIZE, TILE_SIZE));
+  addChild(std::move(highlight_batch_ptr));
+  // mark
+  auto mark_batch_ptr = std::make_unique<SpriteBatch>(marks_texture);
+  m_mark_batch = mark_batch_ptr.get();
+  m_mark_batch->makeGrid(sf::Vector2i(BOARD_SIZE, BOARD_SIZE), sf::Vector2f(TILE_SIZE, TILE_SIZE));
+  addChild(std::move(mark_batch_ptr));
+  //pieces
+  auto pieces_batch_ptr = std::make_unique<SpriteBatch>(pieces_texture);
+  m_pieces_batch = pieces_batch_ptr.get();
+  m_pieces_batch->makeGrid(sf::Vector2i(BOARD_SIZE, BOARD_SIZE), sf::Vector2f(TILE_SIZE, TILE_SIZE));
+  addChild(std::move(pieces_batch_ptr));
 
   // prepare the labels
   for (auto &label : m_labels) {
@@ -23,44 +52,22 @@ BoardEntity::BoardEntity(const int board_size, const float tile_size) : BOARD_SI
     label->setText("HELLO");
     label->setTextSize(16);
   }
-  // label dark color:
-  auto label_light_color = m_board_texture->copyToImage().getPixel(0, 1);
-  auto label_dark_color = m_board_texture->copyToImage().getPixel(17, 1);
 
-  // setup vertices
-  m_board_vertices.resize(BOARD_SIZE * BOARD_SIZE * 4);
-  m_board_vertices.setPrimitiveType(sf::Quads);
-  m_pieces_vertices.resize(BOARD_SIZE * BOARD_SIZE * 4);
-  m_pieces_vertices.setPrimitiveType(sf::Quads);
+  // get colors for labels
+  auto label_light_color = board_texture->copyToImage().getPixel(16, 0);
+  auto label_dark_color = board_texture->copyToImage().getPixel(32, 0);
+
+  // setup board's colors and labels
   for (int x = 0; x < BOARD_SIZE; x++) {
     for (int y = 0; y < BOARD_SIZE; y++) {
 
-      // first, the board
-      sf::Vertex *quad = &m_board_vertices[((y * BOARD_SIZE) + x) * 4];
-      quad[0].position = sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE);
-      quad[1].position = sf::Vector2f((x + 1) * TILE_SIZE, y * TILE_SIZE);
-      quad[2].position = sf::Vector2f((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE);
-      quad[3].position = sf::Vector2f(x * TILE_SIZE, (y + 1) * TILE_SIZE);
-
-      // square's appropriate color
-      if ((x + y) % 2 == 0) {
-        quad[0].texCoords = sf::Vector2f(0, 0);
-        quad[1].texCoords = sf::Vector2f(16.f, 0);
-        quad[2].texCoords = sf::Vector2f(16.f, 16.f);
-        quad[3].texCoords = sf::Vector2f(0, 16.f);
-      } else {
-        quad[0].texCoords = sf::Vector2f(16.f, 0);
-        quad[1].texCoords = sf::Vector2f(32.f, 0);
-        quad[2].texCoords = sf::Vector2f(32.f, 16.f);
-        quad[3].texCoords = sf::Vector2f(16.f, 16.f);
-      }
-
-      // now prepare vertex array for pieces
-      quad = &m_pieces_vertices[((y * BOARD_SIZE) + x) * 4];
-      quad[0].position = sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE);
-      quad[1].position = sf::Vector2f((x + 1) * TILE_SIZE, y * TILE_SIZE);
-      quad[2].position = sf::Vector2f((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE);
-      quad[3].position = sf::Vector2f(x * TILE_SIZE, (y + 1) * TILE_SIZE);
+      // set square's appropriate color
+      QuickSprite board_sprite = m_board_batch->getSprite(y * BOARD_SIZE + x);
+      board_sprite.setTexSize(sf::Vector2f(16.f, 16.f));
+      if ((x + y) % 2 == 0)
+        board_sprite.setTexPosition(sf::Vector2f(16., 0));
+      else
+        board_sprite.setTexPosition(sf::Vector2f(32.f, 0));
 
       // and lastly, the labels
       if (x == BOARD_SIZE - 1) {
@@ -91,75 +98,93 @@ BoardEntity::BoardEntity(const int board_size, const float tile_size) : BOARD_SI
   }
 }
 
-void BoardEntity::onDraw(sf::RenderTarget &target, sf::RenderStates states) const {
-  states.transform *= getTransform();
-
-  sf::RenderStates board_states(states);
-  sf::RenderStates pieces_states(states);
-
-  board_states.texture = m_board_texture;
-  target.draw(m_board_vertices, board_states);
-  pieces_states.texture = m_pieces_texture;
-  target.draw(m_pieces_vertices, pieces_states);
-}
-
 void BoardEntity::clearSquare(Chess::Position position) {
-  sf::Vertex *quad = getPiecesQuadAt(position);
-  quad[0].texCoords = quad[1].texCoords = quad[2].texCoords = quad[3].texCoords = sf::Vector2f(0.f, 0.f);
+  getPiecesSpriteAt(position).clear();
 }
 
 void BoardEntity::setPieceOnSquare(Chess::Position position, Chess::PieceType type, Chess::Color color) {
-  sf::Vertex *quad = getPiecesQuadAt(position);
-  setQuadPieceTexCoords(quad, type, color);
-
-}
-
-void BoardEntity::setQuadPieceTexCoords(sf::Vertex *quad, Chess::PieceType type, Chess::Color color) {
-  auto [tex_x, tex_y] = m_pieces_texture->getSize();
+  QuickSprite sprite = getPiecesSpriteAt(position);
+  auto [tex_x, tex_y] = m_pieces_batch->getTexture()->getSize();
   float x = (float) type * tex_x / 6.f;
   float y = (float) color * tex_y / 2.f;
-  quad[0].texCoords = sf::Vector2f(x, y);
-  quad[1].texCoords = sf::Vector2f(x + tex_x / 6.f, y);
-  quad[2].texCoords = sf::Vector2f(x + tex_x / 6.f, y + tex_y / 2.f);
-  quad[3].texCoords = sf::Vector2f(x, y + tex_y / 2.f);
+  sprite.setTexPosition(sf::Vector2f(x, y));
+  sprite.setTexSize(sf::Vector2f(tex_x / 6.f, tex_y / 2.f));
 }
 
-sf::Vertex *BoardEntity::getPiecesQuadAt(Chess::Position position) {
-  unsigned int x = position.file - 'A';
-  unsigned int y = 8 - position.rank;
-  return &m_pieces_vertices[((y * BOARD_SIZE) + x) * 4];
-}
-
-sf::Vertex *BoardEntity::getBoardQuadAt(Chess::Position position) {
-  unsigned int x = position.file - 'A';
-  unsigned int y = 8 - position.rank;
-  return &m_board_vertices[((y * BOARD_SIZE) + x) * 4];
+QuickSprite BoardEntity::getPiecesSpriteAt(Chess::Position position) {
+  return m_pieces_batch->getSprite(getArrayIndex(position));
 }
 
 void BoardEntity::setSquaresDefaultColors() {
   for (int x = 0; x < BOARD_SIZE; x++) {
     for (int y = 0; y < BOARD_SIZE; y++) {
       Chess::Position position(x + 'A', y + 1);
-      setSquarePressed(position, false);
+      pressSquare(position, true);
     }
   }
 }
 
-void BoardEntity::setSquarePressed(Chess::Position position, bool highlight) {
-  sf::Vertex *quad = getBoardQuadAt(position);
+void BoardEntity::pressSquare(Chess::Position position, bool press) {
+  QuickSprite sprite = m_pressed_batch->getSprite(getArrayIndex(position));
+  if (press) {
+    sprite.setTexPosition({48.f, 0.f});
+    sprite.setTexSize({16.f, 16.f});
+  } else {
+    sprite.clear();
+  }
+}
 
-  // defaults
-  float x_pos = 0.f;
-  if ((position.file - 'A' + position.rank) % 2)
-    x_pos += 16.f;
+void BoardEntity::highlightSquare(Chess::Position position) {
+  QuickSprite sprite = m_highlight_batch->getSprite(getArrayIndex(position));
+  sprite.setTexPosition({64.f, 0.f});
+  sprite.setTexSize({16.f, 16.f});
+}
 
-  // if highlighted then yellow
-  if (highlight)
-    x_pos = 32.f;
+std::pair<unsigned int, unsigned int> BoardEntity::getArrayCoords(Chess::Position position) {
+  unsigned int x = position.file - 'A';
+  unsigned int y = 8 - position.rank;
+//  if (m_flipped) {
+//    x = 8 - position.file + 'A';
+//    y = position.rank - 1;
+//  }
+  return {x, y};
+}
 
-  // apply
-  quad[0].texCoords = sf::Vector2f(x_pos, 0.f);
-  quad[1].texCoords = sf::Vector2f(x_pos + 16.f, 0.f);
-  quad[2].texCoords = sf::Vector2f(x_pos + 16.f, 16.f);
-  quad[3].texCoords = sf::Vector2f(x_pos, 16.f);
+unsigned int BoardEntity::getArrayIndex(Chess::Position position) {
+  auto [x, y] = getArrayCoords(position);
+  return y * BOARD_SIZE + x;
+}
+
+void BoardEntity::clearHighlight() {
+  for (int x = 0; x < BOARD_SIZE; x++) {
+    for (int y = 0; y < BOARD_SIZE; y++) {
+      m_highlight_batch->getSprite(y * BOARD_SIZE + x).clear();
+    }
+  }
+}
+
+void BoardEntity::clearPress() {
+  for (int x = 0; x < BOARD_SIZE; x++) {
+    for (int y = 0; y < BOARD_SIZE; y++) {
+      m_pressed_batch->getSprite(y * BOARD_SIZE + x).clear();
+    }
+  }
+}
+
+void BoardEntity::markSquare(Chess::Position position, unsigned int level) {
+  QuickSprite sprite = m_mark_batch->getSprite(getArrayIndex(position));
+  if (level == 0) {
+    sprite.clear();
+  } else {
+    sprite.setTexPosition({(level - 1) * 256.f, 0.f});
+    sprite.setTexSize({256.f, 256.f});
+  }
+}
+
+void BoardEntity::clearMark() {
+  for (int x = 0; x < BOARD_SIZE; x++) {
+    for (int y = 0; y < BOARD_SIZE; y++) {
+      m_mark_batch->getSprite(y * BOARD_SIZE + x).clear();
+    }
+  }
 }

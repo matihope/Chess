@@ -7,16 +7,19 @@
 #include "Game/Game.hpp"
 
 ChessScene::ChessScene() : WorldEntity() {
+  // create board representation
   auto board_ptr = std::make_unique<BoardEntity>(BOARD_SIZE, TILE_SIZE);
   m_piece_is_floating = false;
   m_board_entity = board_ptr.get();
   addChild(std::move(board_ptr));
 
+  // create floating piece
   auto floating_piece_ptr = std::make_unique<FloatingPiece>(TILE_SIZE);
   m_floating_piece = floating_piece_ptr.get();
   m_floating_piece->hide();
   addChild(std::move(floating_piece_ptr));
 
+  // load clicky tiles
   for (int x = 0; x < 8; ++x) {
     for (int y = 0; y < 8; ++y) {
       Chess::Position pos((char) ('A' + x), y + 1);
@@ -27,40 +30,66 @@ ChessScene::ChessScene() : WorldEntity() {
       addChild(std::move(tile_ptr));
     }
   }
-  updatePieces();
+  reloadBoardPieces();
 }
 
 void ChessScene::onUpdate(float dt) {
 
-  // start moving a piece
   for (auto *tile : m_tiles) {
     if (tile->isPressed()) {
       Chess::Position position = tile->getPosition();
-      if (m_chess_game.getPieceAt(position) != nullptr) {
-        updatePieces();
+      bool made_a_move = m_chess_game.makeMove(m_held_piece_position, position);
+      if (not made_a_move and not m_chess_game.isSquareEmpty(position)) {
+        // mark available moves
+        m_board_entity->clearMark();
+        for (auto move : m_chess_game.getAvailableMovesAt(position)) {
+          m_board_entity->markSquare(move.getEnd(), 1);
+          if (not m_chess_game.isSquareEmpty(move.getEnd()))
+            m_board_entity->markSquare(move.getEnd(), 2);
+
+        }
+        // start dragging a piece
+        reloadBoardPieces();
         m_board_entity->clearSquare(position);
         m_floating_piece->setPieceInfo(m_chess_game.getPieceAt(position)->getInfo());
         m_piece_is_floating = true;
-        m_board_entity->setSquarePressed(position, true);
-        m_board_entity->setSquarePressed(m_held_piece_position, false);
+        if (not m_chess_game.isSquareEmpty(m_held_piece_position))
+          m_board_entity->pressSquare(m_held_piece_position, false);
+        m_board_entity->pressSquare(position, true);
         m_held_piece_position = position;
+      } else {
+        // move to click spot
+        if (made_a_move) {
+          m_board_entity->clearPress();
+          m_board_entity->clearMark();
+          m_board_entity->pressSquare(m_held_piece_position, true);
+          m_board_entity->pressSquare(tile->getPosition(), true);
+
+          reloadBoardPieces();
+        }
       }
     }
   }
 
   // on piece drop
   if (m_piece_is_floating and not sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-    updatePieces();
+    reloadBoardPieces();
     sf::Vector2f mouse_pos = Game::get().getMousePos();
-    m_board_entity->setSquarePressed(m_held_piece_position, false);
+    m_board_entity->clearHighlight();
     m_piece_is_floating = false;
     m_floating_piece->hide();
     // find correct tile
-    for (auto *tile : m_tiles) {
+    for (auto tile : m_tiles) {
       if (tile->contains(mouse_pos)) {
         Chess::Position end_pos = tile->getPosition();
-        m_chess_game.makeMove(m_held_piece_position, end_pos);
-        updatePieces();
+        bool made_a_move = m_chess_game.makeMove(m_held_piece_position, end_pos);
+        if (made_a_move) {
+          m_board_entity->clearPress();
+          m_board_entity->clearMark();
+          m_board_entity->pressSquare(m_held_piece_position, true);
+          m_board_entity->pressSquare(end_pos, true);
+          reloadBoardPieces();
+        }
         break;
       }
     }
@@ -70,10 +99,18 @@ void ChessScene::onUpdate(float dt) {
   if (m_piece_is_floating) {
     m_floating_piece->show();
     m_floating_piece->setPosition(Game::get().getMousePos());
+    sf::Vector2f mouse_pos = Game::get().getMousePos();
+    // find tile to highlight
+    m_board_entity->clearHighlight();
+    for (auto tile : m_tiles) {
+      if (tile->contains(mouse_pos)) {
+        m_board_entity->highlightSquare(tile->getPosition());
+      }
+    }
   }
 }
 
-void ChessScene::updatePieces() {
+void ChessScene::reloadBoardPieces() {
   for (unsigned int x = 0; x < 8; x++) {
     for (unsigned int y = 0; y < 8; y++) {
       Chess::Position pos((char) ('A' + x), y + 1);

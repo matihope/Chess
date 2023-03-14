@@ -13,7 +13,7 @@ class ChessScene : public WorldEntity {
  public:
   ChessScene();
  private:
-  void updatePieces();
+  void reloadBoardPieces();
   Chess::Game m_chess_game;
   BoardEntity *m_board_entity;
   const int BOARD_SIZE = 8;

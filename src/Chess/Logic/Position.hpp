@@ -9,7 +9,8 @@ struct Position {
   Position() : Position('A', 1) {}
 
   Position(char file, unsigned int rank) : file(file), rank(rank) {}
-  friend std::ostream &operator<<( std::ostream &output, const Position &p ) {
+
+  friend std::ostream &operator<<(std::ostream &output, const Position &p) {
     output << "Pos: " << p.file << p.rank;
     return output;
   }

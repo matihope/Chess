@@ -34,8 +34,7 @@ bool Game::init(const std::string &settingsPath) {  // initialize variables
 
   m_window.create(sf::VideoMode(m_game_settings.data["window"]["width"],
                                 m_game_settings.data["window"]["height"]),
-                  std::string(m_game_settings.data["window"]["title"]), sf::Style::Default,
-                  sf::ContextSettings(0, 0, 4));
+                  std::string(m_game_settings.data["window"]["title"]), sf::Style::Default);
   m_window.setVerticalSyncEnabled(m_game_settings.data["window"]["vsync"]);
 
   m_view.reset(sf::FloatRect(0.f, 0.f, m_game_settings.data["viewport"]["width"],
@@ -75,11 +74,11 @@ void Game::update() {
   m_mouse_pos = getRenderWindow().mapPixelToCoords(sf::Mouse::getPosition(getRenderWindow()));
 
   if (!m_scenes_stack.empty()) {
-         m_physics_update_counter += m_dt;
-     if (m_physics_update_counter >= m_physics_update_call_freq) {
-         m_scenes_stack.top()->physicsUpdate(m_physics_update_call_freq);
-         m_physics_update_counter -= m_physics_update_call_freq;
-     }
+    m_physics_update_counter += m_dt;
+    if (m_physics_update_counter >= m_physics_update_call_freq) {
+      m_scenes_stack.top()->physicsUpdate(m_physics_update_call_freq);
+      m_physics_update_counter -= m_physics_update_call_freq;
+    }
     m_scenes_stack.top()->update(m_dt);
   }
 
@@ -111,7 +110,7 @@ void Game::replaceTopScene(std::unique_ptr<WorldEntity> newScene) {
 void Game::pollEvents() {
   sf::Event event;
   while (m_window.pollEvent(event)) {
-     if (!m_scenes_stack.empty()) m_scenes_stack.top()->handleEvent(event);
+    if (!m_scenes_stack.empty()) m_scenes_stack.top()->handleEvent(event);
 
     switch (event.type) {
       case sf::Event::Closed:stop();

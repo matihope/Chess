@@ -18,6 +18,8 @@ class WorldEntity : public sf::Drawable, public sf::Transformable, public Updata
   WorldEntity *m_parent;
 
   bool m_show;
+  
+  void cleanEntities();
 
  public:
   WorldEntity();
@@ -34,7 +36,6 @@ class WorldEntity : public sf::Drawable, public sf::Transformable, public Updata
   WorldEntity *getParent();
 
   void addChild(std::unique_ptr<WorldEntity> entity, unsigned int drawOrder = 0);
-  virtual void cleanEntities();
   void update(float dt) override;
   void physicsUpdate(float dt) override;
   void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

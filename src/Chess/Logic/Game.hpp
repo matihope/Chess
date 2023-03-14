@@ -13,9 +13,10 @@ class Game {
  public:
   Game();
   void newGame();
-  void makeMove(Position start, Position end);
+  bool makeMove(Position start, Position end);
   std::vector<Move> getAvailableMovesAt(Position position);
   bool isMovePossible(Position start, Position end);
+  bool isSquareEmpty(Position position);
 
   // return nullptr if square at pos doesn't have a piece
   // if square does have a piece, return a PieceView pointer

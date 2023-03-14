@@ -15,16 +15,16 @@ void Chess::Game::newGame() {
   m_board.reset();
 }
 
-void Chess::Game::makeMove(Chess::Position start, Chess::Position end) {
+bool Chess::Game::makeMove(Chess::Position start, Chess::Position end) {
   BasePiece *piece_at_start = m_board.getPieceAt(start);
 
   // check if move is possible
   if (piece_at_start == nullptr)
-    return;
+    return false;
   if (piece_at_start->getColor() != m_turn)
-    return;
+    return false;
   if (!piece_at_start->isMovePossible(m_board, end))
-    return;
+    return false;
 
   // swap turns
   if (m_turn == Color::White) {
@@ -58,6 +58,8 @@ void Chess::Game::makeMove(Chess::Position start, Chess::Position end) {
       }
     }
   }
+
+  return true;
 }
 
 std::unique_ptr<Chess::PieceView> Chess::Game::getPieceAt(Chess::Position pos) {
@@ -80,9 +82,16 @@ std::vector<Chess::Move> Chess::Game::getAvailableMovesAt(Chess::Position positi
   if (piece == nullptr)
     return {};
 
+  if (piece->getColor() != m_turn)
+    return {};
+
   std::vector<Move> possible_moves;
   for (const Position end_pos : piece->getAvailableMoves(m_board)) {
     possible_moves.emplace_back(position, end_pos, piece->getInfo());
   }
   return possible_moves;
+}
+
+bool Chess::Game::isSquareEmpty(Chess::Position position) {
+  return getPieceAt(position) == nullptr;
 }
