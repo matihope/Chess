@@ -3,6 +3,8 @@
 #include "Chess/Logic/Pieces/Pawn.hpp"
 #include "Chess/Logic/Pieces/Rook.hpp"
 #include "Chess/Logic/Pieces/Knight.hpp"
+#include "Chess/Logic/Pieces/Bishop.hpp"
+#include "Chess/Logic/Pieces/Queen.hpp"
 
 namespace Chess {
 Board::Board() {
@@ -43,6 +45,20 @@ void Board::reset() {
   getSquareAt(Position('B', 8))->setPiece(std::move(black_knight1));
   getSquareAt(Position('G', 8))->setPiece(std::move(black_knight2));
 
+  auto white_bishop1 = std::make_unique<Bishop>(Color::White);
+  auto white_bishop2 = std::make_unique<Bishop>(Color::White);
+  getSquareAt(Position('C', 1))->setPiece(std::move(white_bishop1));
+  getSquareAt(Position('F', 1))->setPiece(std::move(white_bishop2));
+
+  auto black_bishop1 = std::make_unique<Bishop>(Color::Black);
+  auto black_bishop2 = std::make_unique<Bishop>(Color::Black);
+  getSquareAt(Position('C', 8))->setPiece(std::move(black_bishop1));
+  getSquareAt(Position('F', 8))->setPiece(std::move(black_bishop2));
+
+  auto white_queen = std::make_unique<Queen>(Color::White);
+  auto black_queen = std::make_unique<Queen>(Color::Black);
+  getSquareAt(Position('D', 1))->setPiece(std::move(white_queen));
+  getSquareAt(Position('D', 8))->setPiece(std::move(black_queen));
 
 //  getMutPieceAt('A', 1) = getMutPieceAt('H', 1) = PieceType::WhiteRook;
 //  getMutPieceAt('A', 8) = getMutPieceAt('H', 8) = PieceType::BlackRook;

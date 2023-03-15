@@ -37,7 +37,7 @@ class BasePiece {
   bool _canCapturePos(Board &board, Position end_pos) const;
 
   // should implement the piece's regular behaviour
-  // not king-check and other things, because they are checked in public isMovePossible
+  // not king-check and other things, because they are checked in public wouldMoveBePossible
   virtual bool _isMovePossible(Board &board, Position end_pos) = 0;
 
  public:

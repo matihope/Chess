@@ -7,7 +7,7 @@ set(GAME_SOURCES
         Chess/Logic/Pieces/Pawn.cpp Chess/Logic/Pieces/Pawn.hpp
         Chess/BoardEntity.cpp Chess/BoardEntity.hpp
         Chess/Logic/Move.cpp Chess/Logic/Move.hpp
-        Chess/Logic/Game.cpp Chess/Logic/Game.hpp Chess/Logic/Pieces/PieceView.cpp Chess/Logic/Pieces/PieceView.hpp Chess/Tile.cpp Chess/Tile.hpp Chess/Logic/Pieces/Rook.cpp Chess/Logic/Pieces/Rook.hpp Chess/FloatingPiece.cpp Chess/FloatingPiece.hpp Chess/Logic/Pieces/Knight.cpp Chess/Logic/Pieces/Knight.hpp)
+        Chess/Logic/Game.cpp Chess/Logic/Game.hpp Chess/Logic/Pieces/PieceView.cpp Chess/Logic/Pieces/PieceView.hpp Chess/Tile.cpp Chess/Tile.hpp Chess/Logic/Pieces/Rook.cpp Chess/Logic/Pieces/Rook.hpp Chess/FloatingPiece.cpp Chess/FloatingPiece.hpp Chess/Logic/Pieces/Knight.cpp Chess/Logic/Pieces/Knight.hpp Chess/Logic/Pieces/Bishop.cpp Chess/Logic/Pieces/Bishop.hpp Chess/Logic/Pieces/Queen.cpp Chess/Logic/Pieces/Queen.hpp)
 
 add_library(Game ${GAME_SOURCES})
 

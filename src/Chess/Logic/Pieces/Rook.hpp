@@ -10,7 +10,8 @@ namespace Chess {
 class Rook : public BasePiece {
  public:
   explicit Rook(Color color);
- private:
+  static bool wouldMoveBePossible(Board &board, Position start_pos, Position end_pos);
+ protected:
   bool _isMovePossible(Board &board, Position end_pos) override;
 
 };
