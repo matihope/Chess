@@ -57,6 +57,6 @@ class Game {
   sf::Vector2f getMousePos();
   sf::Font *getFont();
   sf::View *getView();
-  void setCameraCenter(const sf::Vector2f &pos);
+  void setCameraCenterAt(const sf::Vector2f &pos);
   void setCursor(sf::Cursor::Type type);
 };

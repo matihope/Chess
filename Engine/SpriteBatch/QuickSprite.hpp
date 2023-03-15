@@ -20,5 +20,6 @@ class QuickSprite {
   // top left pixel should be transparent!!!
   void clear();
  private:
+  float M_TEX_BUFFER = 0.04;
   sf::Vertex *m_quad;
 };

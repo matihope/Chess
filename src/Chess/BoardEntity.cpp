@@ -10,6 +10,7 @@ BoardEntity::BoardEntity(const int board_size, const float tile_size) : BOARD_SI
 
   // load textures
   ResourceManager::get().setTextureSmooth("../resources/chess_pieces.png", true);
+  ResourceManager::get().setTextureSmooth("../resources/chess_colors.png", false);
   ResourceManager::get().setTextureSmooth("../resources/chess_marks.png", true);
   const sf::Texture *board_texture = &ResourceManager::get().getTexture("../resources/chess_colors.png");
   const sf::Texture *pieces_texture = &ResourceManager::get().getTexture("../resources/chess_pieces.png");
@@ -65,9 +66,9 @@ BoardEntity::BoardEntity(const int board_size, const float tile_size) : BOARD_SI
       QuickSprite board_sprite = m_board_batch->getSprite(y * BOARD_SIZE + x);
       board_sprite.setTexSize(sf::Vector2f(16.f, 16.f));
       if ((x + y) % 2 == 0)
-        board_sprite.setTexPosition(sf::Vector2f(16., 0));
+        board_sprite.setTexPosition(sf::Vector2f(16.0, 0));
       else
-        board_sprite.setTexPosition(sf::Vector2f(32.f, 0));
+        board_sprite.setTexPosition(sf::Vector2f(32.0, 0));
 
       // and lastly, the labels
       if (x == BOARD_SIZE - 1) {

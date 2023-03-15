@@ -161,7 +161,7 @@ sf::Font *Game::getFont() { return &m_font; }
 
 sf::View *Game::getView() { return &m_view; }
 
-void Game::setCameraCenter(const sf::Vector2f &pos) {
+void Game::setCameraCenterAt(const sf::Vector2f &pos) {
   m_view.setCenter(pos);
   m_window.setView(m_view);
   // polsrodek

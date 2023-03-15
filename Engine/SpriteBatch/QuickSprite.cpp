@@ -31,6 +31,7 @@ sf::Vector2f QuickSprite::getSize() const {
 }
 
 void QuickSprite::setTexSize(sf::Vector2f newSize) {
+  newSize -= sf::Vector2f(2 * M_TEX_BUFFER, 2 * M_TEX_BUFFER);
   m_quad[1].texCoords = sf::Vector2f(m_quad[0].texCoords.x + newSize.x, m_quad[0].texCoords.y);
   m_quad[2].texCoords = sf::Vector2f(m_quad[0].texCoords.x + newSize.x, m_quad[0].texCoords.y + newSize.y);
   m_quad[3].texCoords = sf::Vector2f(m_quad[0].texCoords.x, m_quad[0].texCoords.y + newSize.y);
@@ -39,17 +40,17 @@ void QuickSprite::setTexSize(sf::Vector2f newSize) {
 sf::Vector2f QuickSprite::getTexSize() const {
   float width = m_quad[1].texCoords.x - m_quad[0].texCoords.x;
   float height = m_quad[3].texCoords.y - m_quad[0].texCoords.y;
-  return {width, height};
+  return {width + 2 * M_TEX_BUFFER, height + 2 * M_TEX_BUFFER};
 }
 
 void QuickSprite::setTexPosition(sf::Vector2f position) {
   sf::Vector2f size = getTexSize();
-  m_quad[0].texCoords = position;
+  m_quad[0].texCoords = position + sf::Vector2f(M_TEX_BUFFER, M_TEX_BUFFER);
   setTexSize(size);
 }
 
 sf::Vector2f QuickSprite::getTexPosition() const {
-  return m_quad[0].texCoords;
+  return m_quad[0].texCoords - sf::Vector2f(M_TEX_BUFFER, M_TEX_BUFFER);
 }
 
 void QuickSprite::clear() {

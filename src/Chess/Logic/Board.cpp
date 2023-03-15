@@ -20,56 +20,31 @@ Board::Board() {
 void Board::reset() {
   // fill pawns
   for (int i = 0; i < 8; i++) {
-    auto pawn1 = std::make_unique<Pawn>(Color::White);
-    auto pawn2 = std::make_unique<Pawn>(Color::Black);
-    getSquareAt((char) ('A' + i), 2)->setPiece(std::move(pawn1));
-    getSquareAt((char) ('A' + i), 7)->setPiece(std::move(pawn2));
+    getSquareAt((char) ('A' + i), 2)->setPiece(std::make_unique<Pawn>(Color::White));
+    getSquareAt((char) ('A' + i), 7)->setPiece(std::make_unique<Pawn>(Color::Black));
   }
-  auto white_rook1 = std::make_unique<Rook>(Color::White);
-  auto white_rook2 = std::make_unique<Rook>(Color::White);
-  getSquareAt(Position('A', 1))->setPiece(std::move(white_rook1));
-  getSquareAt(Position('H', 1))->setPiece(std::move(white_rook2));
 
-  auto black_rook1 = std::make_unique<Rook>(Color::Black);
-  auto black_rook2 = std::make_unique<Rook>(Color::Black);
-  getSquareAt(Position('A', 8))->setPiece(std::move(black_rook1));
-  getSquareAt(Position('H', 8))->setPiece(std::move(black_rook2));
+  // rooks
+  getSquareAt(Position('A', 1))->setPiece(std::make_unique<Rook>(Color::White));
+  getSquareAt(Position('H', 1))->setPiece(std::make_unique<Rook>(Color::White));
+  getSquareAt(Position('A', 8))->setPiece(std::make_unique<Rook>(Color::Black));
+  getSquareAt(Position('H', 8))->setPiece(std::make_unique<Rook>(Color::Black));
 
-  auto white_knight1 = std::make_unique<Knight>(Color::White);
-  auto white_knight2 = std::make_unique<Knight>(Color::White);
-  getSquareAt(Position('B', 1))->setPiece(std::move(white_knight1));
-  getSquareAt(Position('G', 1))->setPiece(std::move(white_knight2));
+  // knights
+  getSquareAt(Position('B', 1))->setPiece(std::make_unique<Knight>(Color::White));
+  getSquareAt(Position('G', 1))->setPiece(std::make_unique<Knight>(Color::White));
+  getSquareAt(Position('B', 8))->setPiece(std::make_unique<Knight>(Color::Black));
+  getSquareAt(Position('G', 8))->setPiece(std::make_unique<Knight>(Color::Black));
 
-  auto black_knight1 = std::make_unique<Knight>(Color::Black);
-  auto black_knight2 = std::make_unique<Knight>(Color::Black);
-  getSquareAt(Position('B', 8))->setPiece(std::move(black_knight1));
-  getSquareAt(Position('G', 8))->setPiece(std::move(black_knight2));
+  // bishops
+  getSquareAt(Position('C', 1))->setPiece(std::make_unique<Bishop>(Color::White));
+  getSquareAt(Position('F', 1))->setPiece(std::make_unique<Bishop>(Color::White));
+  getSquareAt(Position('C', 8))->setPiece(std::make_unique<Bishop>(Color::Black));
+  getSquareAt(Position('F', 8))->setPiece(std::make_unique<Bishop>(Color::Black));
 
-  auto white_bishop1 = std::make_unique<Bishop>(Color::White);
-  auto white_bishop2 = std::make_unique<Bishop>(Color::White);
-  getSquareAt(Position('C', 1))->setPiece(std::move(white_bishop1));
-  getSquareAt(Position('F', 1))->setPiece(std::move(white_bishop2));
-
-  auto black_bishop1 = std::make_unique<Bishop>(Color::Black);
-  auto black_bishop2 = std::make_unique<Bishop>(Color::Black);
-  getSquareAt(Position('C', 8))->setPiece(std::move(black_bishop1));
-  getSquareAt(Position('F', 8))->setPiece(std::move(black_bishop2));
-
-  auto white_queen = std::make_unique<Queen>(Color::White);
-  auto black_queen = std::make_unique<Queen>(Color::Black);
-  getSquareAt(Position('D', 1))->setPiece(std::move(white_queen));
-  getSquareAt(Position('D', 8))->setPiece(std::move(black_queen));
-
-//  getMutPieceAt('A', 1) = getMutPieceAt('H', 1) = PieceType::WhiteRook;
-//  getMutPieceAt('A', 8) = getMutPieceAt('H', 8) = PieceType::BlackRook;
-//  getMutPieceAt('B', 1) = getMutPieceAt('G', 1) = PieceType::WhiteKnight;
-//  getMutPieceAt('B', 8) = getMutPieceAt('G', 8) = PieceType::BlackKnight;
-//  getMutPieceAt('C', 1) = getMutPieceAt('F', 1) = PieceType::WhiteBishop;
-//  getMutPieceAt('C', 8) = getMutPieceAt('F', 8) = PieceType::BlackBishop;
-//  getMutPieceAt('D', 1) = PieceType::WhiteQueen;
-//  getMutPieceAt('D', 8) = PieceType::BlackQueen;
-//  getMutPieceAt('E', 1) = PieceType::WhiteKing;
-//  getMutPieceAt('E', 8) = PieceType::BlackKing;
+  // queens
+  getSquareAt(Position('D', 1))->setPiece(std::make_unique<Queen>(Color::White));
+  getSquareAt(Position('D', 8))->setPiece(std::make_unique<Queen>(Color::Black));
 
 }
 
