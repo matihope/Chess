@@ -13,6 +13,8 @@ void Chess::Game::newGame() {
   m_moves.clear();
   m_turn = Color::White;
   m_board.reset();
+  m_white_king = m_board.getPieceAt('E', 1);
+  m_black_king = m_board.getPieceAt('E', 8);
 }
 
 bool Chess::Game::makeMove(Chess::Position start, Chess::Position end) {
@@ -27,36 +29,37 @@ bool Chess::Game::makeMove(Chess::Position start, Chess::Position end) {
     return false;
 
   // swap turns
-  if (m_turn == Color::White) {
-    m_turn = Color::Black;
-  } else {
-    m_turn = Color::White;
+  _flipTurn();
+
+  // for undo and redo
+  if (not m_undid_moves.empty()) {
+    if (m_undid_moves.back().getStart() != start or m_undid_moves.back().getEnd() != end)
+      m_undid_moves.clear();
   }
 
-  // keep record of the moves
+  // keep track of the moves
   m_moves.emplace_back(start, end, piece_at_start->getInfo());
 
   // apply move to the board
-  m_board.getSquareAt(end)->popPiece();
-  m_board.getSquareAt(end)->setPiece(m_board.getSquareAt(start)->popPiece());
+  auto captured_piece = _movePiece(start, end);
+
+  // remember, that this move has captured a piece
+  if (captured_piece != nullptr)
+    m_moves.back().setCapturedPiece(captured_piece->getInfo());
 
   // if a pawn reaches the end, it becomes a queen
   PieceInfo piece_info = m_board.getSquareAt(end)->getPiece()->getInfo();
   if (piece_info.type == PieceType::Pawn) {
-    if (piece_info.color == Color::White) {
-      if (end.rank == 8) {
-        m_board.getSquareAt(end)->popPiece();
-        auto m_white_queen = std::make_unique<Rook>(Color::White); // queen not yet implemented
-        m_board.getSquareAt(end)->setPiece(std::move(m_white_queen));
-      }
+    if ((end.rank == 8 and piece_info.color == Color::White) or (piece_info.color == Color::Black and end.rank == 1)) {
+      m_board.createNewPieceAt(end, {PieceType::Queen, piece_info.color});
     }
-    if (piece_info.color == Color::Black) {
-      if (end.rank == 1) {
-        m_board.getSquareAt(end)->popPiece();
-        auto m_black_queen = std::make_unique<Rook>(Color::Black);
-        m_board.getSquareAt(end)->setPiece(std::move(m_black_queen));
-      }
-    }
+  }
+
+  if (isKingChecked(piece_info.color)) {
+    undoLastMove();
+    // so that the move is not tracked in the history
+    m_undid_moves.pop_back();
+    return false;
   }
 
   return true;
@@ -87,11 +90,91 @@ std::vector<Chess::Move> Chess::Game::getAvailableMovesAt(Chess::Position positi
 
   std::vector<Move> possible_moves;
   for (const Position end_pos : piece->getAvailableMoves(m_board)) {
-    possible_moves.emplace_back(position, end_pos, piece->getInfo());
+    if (isMoveKingSafe(position, end_pos))
+      possible_moves.emplace_back(position, end_pos, piece->getInfo());
   }
   return possible_moves;
 }
 
 bool Chess::Game::isSquareEmpty(Chess::Position position) {
   return getPieceAt(position) == nullptr;
+}
+
+bool Chess::Game::undoLastMove() {
+  if (m_moves.empty())
+    return false;
+  auto last_move = m_moves.back();
+  m_undid_moves.push_back(last_move);
+  m_moves.pop_back();
+  _movePiece(last_move.getEnd(), last_move.getStart());
+  if (last_move.hasCapturedPiece())
+    m_board.createNewPieceAt(last_move.getEnd(), last_move.getCapturedPieceInfo());
+  _flipTurn();
+  return true;
+}
+
+const Chess::Move *Chess::Game::getLastMove() const {
+  if (m_moves.empty())
+    return nullptr;
+  return &m_moves.back();
+}
+
+bool Chess::Game::redoLastMove() {
+  if (m_undid_moves.empty())
+    return false;
+  auto last_undid_move = m_undid_moves.back();
+  makeMove(last_undid_move.getStart(), last_undid_move.getEnd());
+  m_undid_moves.pop_back();
+  return true;
+}
+
+void Chess::Game::_flipTurn() {
+  if (m_turn == Color::White) {
+    m_turn = Color::Black;
+  } else {
+    m_turn = Color::White;
+  }
+}
+
+bool Chess::Game::isMoveKingSafe(Chess::Position start, Chess::Position end) {
+  // there is a king at end position
+  if (not m_board.isSquareEmpty(end))
+    if (m_board.getPieceAt(end)->getType() == PieceType::King)
+      return false;
+
+  if (!makeMove(start, end))
+    return false;
+
+  undoLastMove();
+  m_undid_moves.pop_back();
+
+  return true;
+}
+
+std::unique_ptr<Chess::BasePiece> Chess::Game::_movePiece(Chess::Position start, Chess::Position end) {
+  auto captured_piece = m_board.getSquareAt(end)->popPiece();
+  m_board.getSquareAt(end)->setPiece(m_board.getSquareAt(start)->popPiece());
+  return captured_piece;
+}
+
+bool Chess::Game::isKingChecked(Chess::Color kingsColor) {
+  for (int x = 0; x < 8; x++) {
+    for (int y = 0; y < 8; y++) {
+      Position position((char) (x + 'A'), y + 1);
+      if (not m_board.isSquareEmpty(position) and m_board.getPieceAt(position)->getColor() != kingsColor) {
+        auto possible_moves = m_board.getPieceAt(position)->getAvailableMoves(m_board);
+        for (auto move : possible_moves) {
+          if (kingsColor == Color::White) {
+            if (m_white_king->getPosition() == move)
+              return true;
+          }
+          if (kingsColor == Color::Black) {
+            if (m_black_king->getPosition() == move)
+              return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
 }

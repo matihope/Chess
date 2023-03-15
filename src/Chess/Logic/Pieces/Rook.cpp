@@ -16,7 +16,7 @@ Chess::Rook::Rook(Chess::Color color) : BasePiece(color) {
 bool Chess::Rook::wouldMoveBePossible(Chess::Board &board, Chess::Position start_pos, Chess::Position end_pos) {
   // horizontal move
   if (start_pos.file == end_pos.file) {
-    for (unsigned int i = std::min(start_pos.rank, end_pos.rank) + 1; i < std::max(start_pos.rank, end_pos.rank); i++) {
+    for (int i = std::min(start_pos.rank, end_pos.rank) + 1; i < std::max(start_pos.rank, end_pos.rank); i++) {
       Position test_pos(end_pos.file, i);
       if (not board.isSquareEmpty(test_pos))
         return false;

@@ -19,8 +19,13 @@ class ChessScene : public WorldEntity {
   const int BOARD_SIZE = 8;
   const float TILE_SIZE = 100.;
   void onUpdate(float dt) override;
+  void handleEvent(const sf::Event &event) override;
+  bool makeMove(Chess::Position start, Chess::Position end);
   std::array<Tile *, 64> m_tiles;
   bool m_piece_is_floating;
   FloatingPiece *m_floating_piece;
   Chess::Position m_held_piece_position;
+  bool undoLastMove();
+  bool redoLastMove();
+  void _reloadBoardEffects();
 };

@@ -42,7 +42,7 @@ void ChessScene::onUpdate(float dt) {
 
     if (tile->isPressed()) {
       Chess::Position position = tile->getPosition();
-      bool made_a_move = m_chess_game.makeMove(m_held_piece_position, position);
+      bool made_a_move = makeMove(m_held_piece_position, position);
       if (not made_a_move and not m_chess_game.isSquareEmpty(position)) {
         // mark available moves
         m_board_entity->clearMark();
@@ -61,15 +61,7 @@ void ChessScene::onUpdate(float dt) {
         m_board_entity->pressSquare(position, true);
         m_held_piece_position = position;
       } else {
-        // move to click spot
-        if (made_a_move) {
-          m_board_entity->clearPress();
-          m_board_entity->clearMark();
-          m_board_entity->pressSquare(m_held_piece_position, true);
-          m_board_entity->pressSquare(tile->getPosition(), true);
-
-          reloadBoardPieces();
-        }
+        _reloadBoardEffects();
       }
     }
   }
@@ -83,15 +75,7 @@ void ChessScene::onUpdate(float dt) {
     // find correct tile
     for (auto tile : m_tiles) {
       if (tile->contains(mouse_pos)) {
-        Chess::Position end_pos = tile->getPosition();
-        bool made_a_move = m_chess_game.makeMove(m_held_piece_position, end_pos);
-        if (made_a_move) {
-          m_board_entity->clearPress();
-          m_board_entity->clearMark();
-          m_board_entity->pressSquare(m_held_piece_position, true);
-          m_board_entity->pressSquare(end_pos, true);
-          reloadBoardPieces();
-        }
+        makeMove(m_held_piece_position, tile->getPosition());
         break;
       }
     }
@@ -124,4 +108,49 @@ void ChessScene::reloadBoardPieces() {
       }
     }
   }
+}
+
+void ChessScene::handleEvent(const sf::Event &event) {
+  switch (event.type) {
+    case sf::Event::KeyPressed: {
+
+      if (event.key.code == sf::Keyboard::Left) undoLastMove();
+      if (event.key.code == sf::Keyboard::Right) redoLastMove();
+    }
+      break;
+    default:break;
+  }
+}
+
+bool ChessScene::undoLastMove() {
+  bool undid = m_chess_game.undoLastMove();
+  if (undid)
+    _reloadBoardEffects();
+  return undid;
+}
+
+bool ChessScene::redoLastMove() {
+  bool redid = m_chess_game.redoLastMove();
+  if (redid)
+    _reloadBoardEffects();
+  return redid;
+}
+
+bool ChessScene::makeMove(Chess::Position start, Chess::Position end) {
+  bool made_a_move = m_chess_game.makeMove(start, end);
+  if (made_a_move)
+    _reloadBoardEffects();
+  return made_a_move;
+}
+
+void ChessScene::_reloadBoardEffects() {
+  m_board_entity->clearPress();
+  m_board_entity->clearMark();
+  auto last_move = m_chess_game.getLastMove();
+  if (last_move != nullptr) {
+    m_board_entity->pressSquare(last_move->getStart(), true);
+    m_board_entity->pressSquare(last_move->getEnd(), true);
+  }
+  reloadBoardPieces();
+
 }

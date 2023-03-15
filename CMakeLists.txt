@@ -14,10 +14,10 @@ link_libraries(nlohmann_json::nlohmann_json)
 if (MSVC)
     # warning level 4 and all warnings as errors
     add_compile_options(/W4 /WX)
-else()
+else ()
     # lots of warnings and all warnings as errors
-    add_compile_options(-Wall -Wextra -pedantic -Wno-unused-parameter)
-endif()
+    add_compile_options(-Wall -Werror -Wextra -pedantic -Wno-unused-parameter)
+endif ()
 add_compile_options(-std=c++20)
 
 # Link engine

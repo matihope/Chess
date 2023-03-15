@@ -5,6 +5,7 @@
 #include "Chess/Logic/Pieces/Knight.hpp"
 #include "Chess/Logic/Pieces/Bishop.hpp"
 #include "Chess/Logic/Pieces/Queen.hpp"
+#include "Chess/Logic/Pieces/King.hpp"
 
 namespace Chess {
 Board::Board() {
@@ -20,52 +21,73 @@ Board::Board() {
 void Board::reset() {
   // fill pawns
   for (int i = 0; i < 8; i++) {
-    getSquareAt((char) ('A' + i), 2)->setPiece(std::make_unique<Pawn>(Color::White));
-    getSquareAt((char) ('A' + i), 7)->setPiece(std::make_unique<Pawn>(Color::Black));
+    createNewPieceAt({(char) ('A' + i), 2}, {PieceType::Pawn, Color::White});
+    createNewPieceAt({(char) ('A' + i), 7}, {PieceType::Pawn, Color::Black});
   }
 
   // rooks
-  getSquareAt(Position('A', 1))->setPiece(std::make_unique<Rook>(Color::White));
-  getSquareAt(Position('H', 1))->setPiece(std::make_unique<Rook>(Color::White));
-  getSquareAt(Position('A', 8))->setPiece(std::make_unique<Rook>(Color::Black));
-  getSquareAt(Position('H', 8))->setPiece(std::make_unique<Rook>(Color::Black));
+  createNewPieceAt({'A', 1}, {PieceType::Rook, Color::White});
+  createNewPieceAt({'H', 1}, {PieceType::Rook, Color::White});
+  createNewPieceAt({'A', 8}, {PieceType::Rook, Color::Black});
+  createNewPieceAt({'H', 8}, {PieceType::Rook, Color::Black});
 
   // knights
-  getSquareAt(Position('B', 1))->setPiece(std::make_unique<Knight>(Color::White));
-  getSquareAt(Position('G', 1))->setPiece(std::make_unique<Knight>(Color::White));
-  getSquareAt(Position('B', 8))->setPiece(std::make_unique<Knight>(Color::Black));
-  getSquareAt(Position('G', 8))->setPiece(std::make_unique<Knight>(Color::Black));
+  createNewPieceAt({'B', 1}, {PieceType::Knight, Color::White});
+  createNewPieceAt({'G', 1}, {PieceType::Knight, Color::White});
+  createNewPieceAt({'B', 8}, {PieceType::Knight, Color::Black});
+  createNewPieceAt({'G', 8}, {PieceType::Knight, Color::Black});
 
   // bishops
-  getSquareAt(Position('C', 1))->setPiece(std::make_unique<Bishop>(Color::White));
-  getSquareAt(Position('F', 1))->setPiece(std::make_unique<Bishop>(Color::White));
-  getSquareAt(Position('C', 8))->setPiece(std::make_unique<Bishop>(Color::Black));
-  getSquareAt(Position('F', 8))->setPiece(std::make_unique<Bishop>(Color::Black));
+  createNewPieceAt({'C', 1}, {PieceType::Bishop, Color::White});
+  createNewPieceAt({'F', 1}, {PieceType::Bishop, Color::White});
+  createNewPieceAt({'C', 8}, {PieceType::Bishop, Color::Black});
+  createNewPieceAt({'F', 8}, {PieceType::Bishop, Color::Black});
 
   // queens
-  getSquareAt(Position('D', 1))->setPiece(std::make_unique<Queen>(Color::White));
-  getSquareAt(Position('D', 8))->setPiece(std::make_unique<Queen>(Color::Black));
+  createNewPieceAt({'D', 1}, {PieceType::Queen, Color::White});
+  createNewPieceAt({'D', 8}, {PieceType::Queen, Color::Black});
 
+  // kings
+  createNewPieceAt({'E', 1}, {PieceType::King, Color::White});
+  createNewPieceAt({'E', 8}, {PieceType::King, Color::Black});
 }
 
-Square *Board::getSquareAt(Position pos) {
-  return getSquareAt(pos.file, pos.rank);
+Square *Board::getSquareAt(Position position) {
+  return getSquareAt(position.file, position.rank);
 }
 
 Square *Board::getSquareAt(char file, uint rank) {
   return &m_board[8 - rank][(std::size_t) (file - 'A')];
 }
 
-BasePiece *Board::getPieceAt(Position pos) {
-  return getPieceAt(pos.file, pos.rank);
+BasePiece *Board::getPieceAt(Position position) {
+  return getPieceAt(position.file, position.rank);
 }
 
 BasePiece *Board::getPieceAt(char file, uint rank) {
   return getSquareAt(file, rank)->getPiece();
 }
 
-bool Board::isSquareEmpty(Position pos) {
-  return getSquareAt(pos)->getPiece() == nullptr;
+bool Board::isSquareEmpty(Position position) {
+  return getSquareAt(position)->getPiece() == nullptr;
+}
+
+void Board::createNewPieceAt(Position position, PieceInfo piece_info) {
+  auto [type, color] = piece_info;
+  switch (type) {
+    case PieceType::King: getSquareAt(position)->setPiece(std::make_unique<King>(color));
+      break;
+    case PieceType::Queen: getSquareAt(position)->setPiece(std::make_unique<Queen>(color));
+      break;
+    case PieceType::Bishop: getSquareAt(position)->setPiece(std::make_unique<Bishop>(color));
+      break;
+    case PieceType::Knight: getSquareAt(position)->setPiece(std::make_unique<Knight>(color));
+      break;
+    case PieceType::Rook: getSquareAt(position)->setPiece(std::make_unique<Rook>(color));
+      break;
+    case PieceType::Pawn: getSquareAt(position)->setPiece(std::make_unique<Pawn>(color));
+      break;
+  }
 }
 
 }  // namespace Chess

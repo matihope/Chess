@@ -10,11 +10,12 @@ class Board {
  public:
   Board();
   void reset();
-  [[nodiscard]] Square *getSquareAt(Position pos);
+  void createNewPieceAt(Position position, PieceInfo piece_info);
+  [[nodiscard]] Square *getSquareAt(Position position);
   [[nodiscard]] Square *getSquareAt(char file, uint rank);
-  [[nodiscard]] BasePiece *getPieceAt(Position pos);
+  [[nodiscard]] BasePiece *getPieceAt(Position position);
   [[nodiscard]] BasePiece *getPieceAt(char file, uint rank);
-  bool isSquareEmpty(Position pos);
+  bool isSquareEmpty(Position position);
 
  private:
   std::array<std::array<Square, 8>, 8> m_board;
