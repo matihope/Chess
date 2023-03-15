@@ -20,3 +20,10 @@ const sf::Texture &ResourceManager::getTexture(const std::string &path) {
 void ResourceManager::setTextureSmooth(const std::string &path, bool smooth) {
   getMutTexture(path).setSmooth(smooth);
 }
+
+const sf::Cursor &ResourceManager::getSystemCursor(sf::Cursor::Type type) {
+  if (!m_system_cursors.contains(type)) {
+    m_system_cursors[type].loadFromSystem(type);
+  }
+  return m_system_cursors[type];
+}

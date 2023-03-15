@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <iterator>
+#include "ResourceManager/ResourceManager.hpp"
 
 sf::Vector2f scaleToFit(const sf::Vector2f viewSize, const sf::Vector2u windowSize) {
   sf::Vector2f scale;
@@ -145,7 +146,7 @@ sf::Vector2u Game::getViewportSize() {
   return {m_game_settings.data["viewport"]["width"], m_game_settings.data["viewport"]["height"]};
 }
 
-const sf::RenderWindow &Game::getRenderWindow() { return m_window; }
+sf::RenderWindow &Game::getRenderWindow() { return m_window; }
 
 void Game::updateViewportSize() {
   sf::Vector2f viewportScale = scaleToFit(m_view.getSize(), getWindowSize());
@@ -167,4 +168,8 @@ void Game::setCameraCenter(const sf::Vector2f &pos) {
   m_fps_label.setPosition(
       pos - sf::Vector2f(384 / 2, 216 / 2) +
           sf::Vector2f(float(m_game_settings.data["viewport"]["width"]) - 1, 1));  // a
+}
+
+void Game::setCursor(sf::Cursor::Type type) {
+  getRenderWindow().setMouseCursor(ResourceManager::get().getSystemCursor(type));
 }

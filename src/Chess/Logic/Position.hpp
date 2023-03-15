@@ -10,9 +10,8 @@ struct Position {
 
   Position(char file, unsigned int rank) : file(file), rank(rank) {}
 
-  friend std::ostream &operator<<(std::ostream &output, const Position &p) {
-    output << "Pos: " << p.file << p.rank;
-    return output;
+  friend bool operator==(const Position &lhs, const Position &rhs) {
+    return lhs.file == rhs.file and lhs.rank == rhs.rank;
   }
 };
 }  // namespace Chess

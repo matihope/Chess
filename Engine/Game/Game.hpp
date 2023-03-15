@@ -49,7 +49,7 @@ class Game {
   bool isRunning() const;
   sf::Vector2u getWindowSize();
   sf::Vector2u getViewportSize();
-  const sf::RenderWindow &getRenderWindow();
+  sf::RenderWindow &getRenderWindow();
   void updateViewportSize();
   void addScene(std::unique_ptr<WorldEntity> newScene);
   void replaceTopScene(std::unique_ptr<WorldEntity> newScene);
@@ -58,4 +58,5 @@ class Game {
   sf::Font *getFont();
   sf::View *getView();
   void setCameraCenter(const sf::Vector2f &pos);
+  void setCursor(sf::Cursor::Type type);
 };

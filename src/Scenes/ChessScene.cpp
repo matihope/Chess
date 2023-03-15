@@ -34,8 +34,12 @@ ChessScene::ChessScene() : WorldEntity() {
 }
 
 void ChessScene::onUpdate(float dt) {
-
+  Game::get().setCursor(sf::Cursor::Arrow);
+  sf::Vector2f mouse_pos = Game::get().getMousePos();
   for (auto *tile : m_tiles) {
+    if (tile->contains(mouse_pos) and not m_chess_game.isSquareEmpty(tile->getPosition()))
+      Game::get().setCursor(sf::Cursor::Hand);
+
     if (tile->isPressed()) {
       Chess::Position position = tile->getPosition();
       bool made_a_move = m_chess_game.makeMove(m_held_piece_position, position);
@@ -46,7 +50,6 @@ void ChessScene::onUpdate(float dt) {
           m_board_entity->markSquare(move.getEnd(), 1);
           if (not m_chess_game.isSquareEmpty(move.getEnd()))
             m_board_entity->markSquare(move.getEnd(), 2);
-
         }
         // start dragging a piece
         reloadBoardPieces();
@@ -74,7 +77,6 @@ void ChessScene::onUpdate(float dt) {
   // on piece drop
   if (m_piece_is_floating and not sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
     reloadBoardPieces();
-    sf::Vector2f mouse_pos = Game::get().getMousePos();
     m_board_entity->clearHighlight();
     m_piece_is_floating = false;
     m_floating_piece->hide();
@@ -97,9 +99,9 @@ void ChessScene::onUpdate(float dt) {
 
   // update floating piece's position
   if (m_piece_is_floating) {
+    Game::get().setCursor(sf::Cursor::Hand);
     m_floating_piece->show();
     m_floating_piece->setPosition(Game::get().getMousePos());
-    sf::Vector2f mouse_pos = Game::get().getMousePos();
     // find tile to highlight
     m_board_entity->clearHighlight();
     for (auto tile : m_tiles) {
