@@ -36,6 +36,17 @@ class WorldEntity : public sf::Drawable, public sf::Transformable, public Updata
   WorldEntity *getParent();
 
   void addChild(std::unique_ptr<WorldEntity> entity, unsigned int drawOrder = 0);
+
+  // ugly, but this function has to be in .hpp file, otherwise it's unusable
+  // unluckily, in order to use this function, you have to always specify drawOrder
+  template<class T, unsigned int drawOrder = 0, class... Args>
+  T *addChild(Args&&... args) {
+    auto new_child = std::make_unique<T>(std::forward<Args>(args)...);
+    auto new_child_ptr = new_child.get();
+    addChild(std::move(new_child), drawOrder);
+    return new_child_ptr;
+  }
+
   void update(float dt) override;
   void physicsUpdate(float dt) override;
   void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

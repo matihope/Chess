@@ -55,6 +55,7 @@ Square *BasePiece::getSquare() {
 
 bool BasePiece::_canCapturePos(Board &board, Position end_pos) const {
   if (board.isSquareEmpty(end_pos)) return true;
+//  if(board.getPieceAt(end_pos)->getType() == PieceType::King) return false;
   return getColor() != board.getPieceAt(end_pos)->getColor();
 }
 

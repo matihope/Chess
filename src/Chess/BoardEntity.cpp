@@ -18,37 +18,24 @@ BoardEntity::BoardEntity(const int board_size, const float tile_size) : BOARD_SI
 
   // set batches
   // board
-  auto board_batch_ptr = std::make_unique<SpriteBatch>(board_texture);
-  m_board_batch = board_batch_ptr.get();
-  m_board_batch->makeGrid(sf::Vector2i(BOARD_SIZE, BOARD_SIZE), sf::Vector2f(TILE_SIZE, TILE_SIZE));
-  addChild(std::move(board_batch_ptr));
+  m_board_batch = addChild<SpriteBatch>(board_texture);
+  m_board_batch->makeGrid({BOARD_SIZE, BOARD_SIZE}, {TILE_SIZE, TILE_SIZE});
   // pressed
-  auto pressed_batch_ptr = std::make_unique<SpriteBatch>(board_texture);
-  m_pressed_batch = pressed_batch_ptr.get();
-  m_pressed_batch->makeGrid(sf::Vector2i(BOARD_SIZE, BOARD_SIZE), sf::Vector2f(TILE_SIZE, TILE_SIZE));
-  addChild(std::move(pressed_batch_ptr));
+  m_pressed_batch = addChild<SpriteBatch>(board_texture);
+  m_pressed_batch->makeGrid({BOARD_SIZE, BOARD_SIZE}, {TILE_SIZE, TILE_SIZE});
   // highlight
-  auto highlight_batch_ptr = std::make_unique<SpriteBatch>(board_texture);
-  m_highlight_batch = highlight_batch_ptr.get();
-  m_highlight_batch->makeGrid(sf::Vector2i(BOARD_SIZE, BOARD_SIZE), sf::Vector2f(TILE_SIZE, TILE_SIZE));
-  addChild(std::move(highlight_batch_ptr));
+  m_highlight_batch = addChild<SpriteBatch>(board_texture);
+  m_highlight_batch->makeGrid({BOARD_SIZE, BOARD_SIZE}, {TILE_SIZE, TILE_SIZE});
   // mark
-  auto mark_batch_ptr = std::make_unique<SpriteBatch>(marks_texture);
-  m_mark_batch = mark_batch_ptr.get();
-  m_mark_batch->makeGrid(sf::Vector2i(BOARD_SIZE, BOARD_SIZE), sf::Vector2f(TILE_SIZE, TILE_SIZE));
-  addChild(std::move(mark_batch_ptr));
+  m_mark_batch = addChild<SpriteBatch>(marks_texture);
+  m_mark_batch->makeGrid({BOARD_SIZE, BOARD_SIZE}, {TILE_SIZE, TILE_SIZE});
   //pieces
-  auto pieces_batch_ptr = std::make_unique<SpriteBatch>(pieces_texture);
-  m_pieces_batch = pieces_batch_ptr.get();
-  m_pieces_batch->makeGrid(sf::Vector2i(BOARD_SIZE, BOARD_SIZE), sf::Vector2f(TILE_SIZE, TILE_SIZE));
-  addChild(std::move(pieces_batch_ptr));
+  m_pieces_batch = addChild<SpriteBatch>(pieces_texture);
+  m_pieces_batch->makeGrid({BOARD_SIZE, BOARD_SIZE}, {TILE_SIZE, TILE_SIZE});
 
   // prepare the labels
   for (auto &label : m_labels) {
-    auto label_ptr = std::make_unique<GUI::Label>();
-    label = label_ptr.get();
-    label->setFont(Game::get().getFont());
-    addChild(std::move(label_ptr));
+    label = addChild<GUI::Label>(Game::get().getFont());
     label->setPosition(50, 50);
     label->setText("HELLO");
     label->setTextSize(16);
