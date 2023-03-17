@@ -11,7 +11,10 @@ Chess::Queen::Queen(Chess::Color color) : BasePiece(color) {
   setType(PieceType::Queen);
 }
 
-bool Chess::Queen::_isMovePossible(Chess::Board &board, Chess::Position end_pos) {
+bool Chess::Queen::_isMovePossible(Board &board, Position end_pos, const Move *last_move) {
   Position my_pos = getPosition();
-  return Bishop::wouldMoveBePossible(board, my_pos, end_pos) or Rook::wouldMoveBePossible(board, my_pos, end_pos);
-  }
+  return Bishop::wouldMoveBePossible(board, my_pos, end_pos) or Rook::wouldMoveBePossible(board,
+                                                                                          my_pos,
+                                                                                          end_pos,
+                                                                                          nullptr);
+}

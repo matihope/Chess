@@ -29,11 +29,11 @@ ChessScene::ChessScene() : WorldEntity() {
 }
 
 void ChessScene::onUpdate(float dt) {
-  Game::get().setCursor(sf::Cursor::Arrow);
+  sf::Cursor::Type new_cursor_type = sf::Cursor::Arrow;
   sf::Vector2f mouse_pos = Game::get().getMousePos();
   for (auto *tile : m_tiles) {
     if (tile->contains(mouse_pos) and not m_chess_game.isSquareEmpty(tile->getPosition()))
-      Game::get().setCursor(sf::Cursor::Hand);
+      new_cursor_type = sf::Cursor::Hand;
 
     if (tile->isPressed()) {
       Chess::Position position = tile->getPosition();
@@ -53,8 +53,11 @@ void ChessScene::onUpdate(float dt) {
         m_piece_is_floating = true;
         if (not m_chess_game.isSquareEmpty(m_held_piece_position))
           m_board_entity->pressSquare(m_held_piece_position, false);
+
         m_board_entity->pressSquare(position, true);
         m_held_piece_position = position;
+        std::cout << m_held_piece_position.file << m_held_piece_position.rank << " "
+                  << m_chess_game.getPieceAt(m_held_piece_position)->getMoveCount() << '\n';
       } else {
         _reloadBoardEffects();
       }
@@ -78,7 +81,7 @@ void ChessScene::onUpdate(float dt) {
 
   // update floating piece's position
   if (m_piece_is_floating) {
-    Game::get().setCursor(sf::Cursor::Hand);
+    new_cursor_type = sf::Cursor::Hand;
     m_floating_piece->show();
     m_floating_piece->setPosition(Game::get().getMousePos());
     // find tile to highlight
@@ -89,17 +92,18 @@ void ChessScene::onUpdate(float dt) {
       }
     }
   }
+  Game::get().setCursor(new_cursor_type);
 }
 
 void ChessScene::reloadBoardPieces() {
   for (unsigned int x = 0; x < 8; x++) {
     for (unsigned int y = 0; y < 8; y++) {
       Chess::Position pos((char) ('A' + x), y + 1);
-      std::unique_ptr<Chess::PieceView> piece_view = m_chess_game.getPieceAt(pos);
-      if (piece_view == nullptr) {
+      auto piece = m_chess_game.getPieceAt(pos);
+      if (piece == nullptr) {
         m_board_entity->clearSquare(pos);
       } else {
-        m_board_entity->setPieceOnSquare(pos, piece_view->getType(), piece_view->getColor());
+        m_board_entity->setPieceOnSquare(pos, piece->getType(), piece->getColor());
       }
     }
   }
@@ -108,7 +112,6 @@ void ChessScene::reloadBoardPieces() {
 void ChessScene::handleEvent(const sf::Event &event) {
   switch (event.type) {
     case sf::Event::KeyPressed: {
-
       if (event.key.code == sf::Keyboard::Left) undoLastMove();
       if (event.key.code == sf::Keyboard::Right) redoLastMove();
     }

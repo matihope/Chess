@@ -13,6 +13,6 @@ class Bishop : public BasePiece {
   ~Bishop() = default;
   static bool wouldMoveBePossible(Board &board, Position start_pos, Position end_pos);
  private:
-  bool _isMovePossible(Board &board, Position end_pos) override;
+  bool _isMovePossible(Board &board, Position end_pos, const Move *last_move) override;
 };
 }

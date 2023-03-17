@@ -18,6 +18,7 @@ class Game {
   bool m_enable_print_fps = false;
   float m_physics_update_call_freq = 1. / 60.;
   float m_physics_update_counter = 0.f;
+  sf::Cursor::Type m_current_cursor_type;
 
   // objects
   sf::Clock m_clock;

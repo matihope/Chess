@@ -5,13 +5,13 @@
 #pragma once
 #include "BasePiece.hpp"
 
-namespace Chess{
+namespace Chess {
 
 class Queen : public BasePiece {
  public:
   explicit Queen(Color color);
   ~Queen() override = default;
  private:
-  bool _isMovePossible(Board &board, Position end_pos) override;
+  bool _isMovePossible(Board &board, Position end_pos, const Move *last_move) override;
 };
 }

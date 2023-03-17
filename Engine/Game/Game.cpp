@@ -55,6 +55,10 @@ bool Game::init(const std::string &settingsPath) {  // initialize variables
   m_fps_label.setTextSize(32);
   m_fps_label.setAlignment(GUI::HAlignment::RIGHT, GUI::VAlignment::TOP);
 
+  // lastly, set cursor
+  m_current_cursor_type = sf::Cursor::Arrow;
+  setCursor(sf::Cursor::Arrow);
+
   return true;
 }
 
@@ -171,5 +175,9 @@ void Game::setCameraCenterAt(const sf::Vector2f &pos) {
 }
 
 void Game::setCursor(sf::Cursor::Type type) {
+  if (m_current_cursor_type == type)
+    return;
+  m_current_cursor_type = type;
+
   getRenderWindow().setMouseCursor(ResourceManager::get().getSystemCursor(type));
 }

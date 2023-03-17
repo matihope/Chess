@@ -38,6 +38,6 @@ class BoardEntity : public WorldEntity {
   const int BOARD_SIZE;
   const float TILE_SIZE;
   QuickSprite getPiecesSpriteAt(Chess::Position position);
-  std::pair<unsigned int, unsigned int> getArrayCoords(Chess::Position position);
+  static std::pair<unsigned int, unsigned int> getArrayCoords(Chess::Position position);
   unsigned int getArrayIndex(Chess::Position position);
 };

@@ -12,6 +12,8 @@ Move::Move(Position start, Position end, PieceInfo info) {
   m_info = info;
   m_has_captured_piece = false;
   m_captured_piece_info = {PieceType::Pawn, Color::White};
+  m_captured_piece_position = Position('A', 1);
+  m_captured_piece_move_count = 0;
 }
 
 PieceInfo Move::getInfo() const {
@@ -34,9 +36,15 @@ Position Move::getEnd() const {
   return m_end;
 }
 
-void Move::setCapturedPiece(PieceInfo piece_info) {
+void Move::setCapturedPiece(PieceInfo piece_info, Position position, unsigned int move_count) {
   m_has_captured_piece = true;
   m_captured_piece_info = piece_info;
+  m_captured_piece_position = position;
+  m_captured_piece_move_count = move_count;
+}
+
+void Move::setCapturedPiece(const BasePiece &piece) {
+  setCapturedPiece(piece.getInfo(), piece.getPosition(), piece.getMoveCount());
 }
 
 bool Move::hasCapturedPiece() const {
@@ -45,6 +53,14 @@ bool Move::hasCapturedPiece() const {
 
 PieceInfo Move::getCapturedPieceInfo() const {
   return m_captured_piece_info;
+}
+
+Position Move::getCapturedPiecePosition() const {
+  return m_captured_piece_position;
+}
+
+unsigned int Move::getCapturedPieceMoveCount() const {
+  return m_captured_piece_move_count;
 }
 
 }

@@ -24,14 +24,13 @@ void Clickable::update(float dt) {
       if (m_is_pressable) {
         m_is_held = true;
         onHold();
-        if(not m_was_held_prev and m_click_mode == ClickMode::PressOnClick)
+        if (not m_was_held_prev and m_click_mode == ClickMode::PressOnClick)
           makePress();
       }
     } else {
       m_is_pressable = true;
       if (m_was_held_prev) {
-        m_is_pressed = true;
-        if(m_click_mode == ClickMode::PressOnRelease)
+        if (m_click_mode == ClickMode::PressOnRelease)
           makePress();
         onRelease();
       } else {

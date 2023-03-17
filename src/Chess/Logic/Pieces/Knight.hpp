@@ -11,6 +11,6 @@ class Knight : public BasePiece {
   explicit Knight(Color color);
   ~Knight() override;
  private:
-  bool _isMovePossible(Board &board, Position end_pos) override;
+  bool _isMovePossible(Board &board, Position end_pos, const Move *last_move) override;
 };
 }

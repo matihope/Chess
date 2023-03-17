@@ -11,7 +11,7 @@ class Pawn : public BasePiece {
   explicit Pawn(Color color);
   ~Pawn() override;
  private:
-  bool _isMovePossible(Board &board, Position end_pos) override;
+  bool _isMovePossible(Board &board, Position end_pos, const Move *last_move) override;
 };
 
 }

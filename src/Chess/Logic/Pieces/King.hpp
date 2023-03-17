@@ -11,6 +11,6 @@ class King : public BasePiece {
  public:
   explicit King(Color color);
  private:
-  bool _isMovePossible(Board &board, Position end_pos) override;
+  bool _isMovePossible(Board &board, Position end_pos, const Move *last_move) override;
 };
 }

@@ -52,8 +52,20 @@ void Board::reset() {
   createNewPieceAt({'E', 8}, {PieceType::King, Color::Black});
 }
 
-Square *Board::getSquareAt(Position position) {
+const Square *Board::getSquareAt(Position position) const {
   return getSquareAt(position.file, position.rank);
+}
+
+const Square *Board::getSquareAt(char file, uint rank) const {
+  return &m_board[8 - rank][(std::size_t) (file - 'A')];
+}
+
+const BasePiece *Board::getPieceAt(Position position) const {
+  return getPieceAt(position.file, position.rank);
+}
+
+const BasePiece *Board::getPieceAt(char file, uint rank) const {
+  return getSquareAt(file, rank)->getPiece();
 }
 
 Square *Board::getSquareAt(char file, uint rank) {
@@ -61,18 +73,22 @@ Square *Board::getSquareAt(char file, uint rank) {
 }
 
 BasePiece *Board::getPieceAt(Position position) {
-  return getPieceAt(position.file, position.rank);
+  return getSquareAt(position)->getPiece();
 }
 
 BasePiece *Board::getPieceAt(char file, uint rank) {
   return getSquareAt(file, rank)->getPiece();
 }
 
+Square *Board::getSquareAt(Position position) {
+  return getSquareAt(position.file, position.rank);
+}
+
 bool Board::isSquareEmpty(Position position) {
   return getSquareAt(position)->getPiece() == nullptr;
 }
 
-void Board::createNewPieceAt(Position position, PieceInfo piece_info) {
+void Board::createNewPieceAt(Position position, PieceInfo piece_info, unsigned int move_count) {
   auto [type, color] = piece_info;
   switch (type) {
     case PieceType::King: getSquareAt(position)->setPiece(std::make_unique<King>(color));
@@ -88,6 +104,7 @@ void Board::createNewPieceAt(Position position, PieceInfo piece_info) {
     case PieceType::Pawn: getSquareAt(position)->setPiece(std::make_unique<Pawn>(color));
       break;
   }
+  getPieceAt(position)->setMoveCounter(move_count);
 }
 
 }  // namespace Chess

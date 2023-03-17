@@ -8,7 +8,7 @@ Chess::Knight::Knight(Chess::Color color) : BasePiece(color) {
   setType(PieceType::Knight);
 }
 
-bool Chess::Knight::_isMovePossible(Chess::Board &board, Chess::Position end_pos) {
+bool Chess::Knight::_isMovePossible(Board &board, Position end_pos, const Move *last_move) {
   Position my_pos = getPosition();
   int x_diff = abs(my_pos.file - end_pos.file);
   int y_diff = abs(my_pos.rank - end_pos.rank);

@@ -6,7 +6,6 @@
 
 #include "Move.hpp"
 #include "Board.hpp"
-#include "Chess/Logic/Pieces/PieceView.hpp"
 
 namespace Chess {
 class Game {
@@ -36,7 +35,7 @@ class Game {
 
   // return nullptr if square at pos doesn't have a piece
   // if square does have a piece, return a PieceView pointer
-  std::unique_ptr<PieceView> getPieceAt(Position pos);
+  [[nodiscard]] const BasePiece *getPieceAt(Position pos) const;
  private:
   Board m_board;
   Color m_turn;

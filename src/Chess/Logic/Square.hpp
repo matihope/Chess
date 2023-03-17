@@ -13,11 +13,11 @@ class Square {
  public:
   Square();
   void setPosition(Position pos);
-  Position getPosition();
+  [[nodiscard]] Position getPosition() const;
   // sets m_piece to nullptr and returns last piece
   std::unique_ptr<BasePiece> popPiece();
   void setPiece(std::unique_ptr<BasePiece> piece);
-  BasePiece *getPiece();
+  [[nodiscard]] BasePiece *getPiece() const;
 
  private:
   std::unique_ptr<BasePiece> m_piece;

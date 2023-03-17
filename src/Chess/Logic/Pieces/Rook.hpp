@@ -10,9 +10,11 @@ namespace Chess {
 class Rook : public BasePiece {
  public:
   explicit Rook(Color color);
-  static bool wouldMoveBePossible(Board &board, Position start_pos, Position end_pos);
+
+  // last_move is here just to be consistent with piece's function arguments
+  static bool wouldMoveBePossible(Board &board, Position start_pos, Position end_pos, const Move *last_move);
  protected:
-  bool _isMovePossible(Board &board, Position end_pos) override;
+  bool _isMovePossible(Board &board, Position end_pos, const Move *last_move) override;
 
 };
 }
