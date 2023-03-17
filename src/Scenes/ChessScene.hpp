@@ -13,18 +13,18 @@ class ChessScene : public WorldEntity {
  public:
   ChessScene();
  private:
-  void reloadBoardPieces();
-  Chess::Game m_chess_game;
-  BoardEntity *m_board_entity;
+  bool m_piece_is_floating;
   const int BOARD_SIZE = 8;
   const float TILE_SIZE = 100.;
+  Chess::Game m_chess_game;
+  BoardEntity *m_board_entity;
+  std::array<Tile *, 64> m_tiles;
+  FloatingPiece *m_floating_piece;
+  Chess::Position m_held_piece_position;
+  void reloadBoardPieces();
   void onUpdate(float dt) override;
   void handleEvent(const sf::Event &event) override;
   bool makeMove(Chess::Position start, Chess::Position end);
-  std::array<Tile *, 64> m_tiles;
-  bool m_piece_is_floating;
-  FloatingPiece *m_floating_piece;
-  Chess::Position m_held_piece_position;
   bool undoLastMove();
   bool redoLastMove();
   void _reloadBoardEffects();
