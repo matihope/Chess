@@ -3,14 +3,14 @@
     "width": 800,
     "height": 800,
     "title": "Chess!",
-    "vsync": true
+    "vsync": false
   },
   "viewport": {
     "width": 800,
     "height": 800
   },
   "debug": {
-    "printFPS": false,
+    "printFPS": true,
     "drawCollisionShapes": false
   },
   "engine": {

@@ -15,6 +15,7 @@ class Move {
   PieceInfo m_captured_piece_info;
   Position m_captured_piece_position;
   unsigned int m_captured_piece_move_count;
+  bool m_is_castling;
  public:
   Move(Position start, Position end, PieceInfo info);
   [[nodiscard]] PieceType getType() const;
@@ -29,5 +30,8 @@ class Move {
   [[nodiscard]] Position getCapturedPiecePosition() const;
   [[nodiscard]] bool hasCapturedPiece() const;
   [[nodiscard]] unsigned int getCapturedPieceMoveCount() const;
+
+  void setCastling();
+  bool isCastling() const;
 };
 }

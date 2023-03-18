@@ -103,15 +103,6 @@ QuickSprite BoardEntity::getPiecesSpriteAt(Chess::Position position) {
   return m_pieces_batch->getSprite(getArrayIndex(position));
 }
 
-void BoardEntity::setSquaresDefaultColors() {
-  for (int x = 0; x < BOARD_SIZE; x++) {
-    for (int y = 0; y < BOARD_SIZE; y++) {
-      Chess::Position position(x + 'A', y + 1);
-      pressSquare(position, true);
-    }
-  }
-}
-
 void BoardEntity::pressSquare(Chess::Position position, bool press) {
   QuickSprite sprite = m_pressed_batch->getSprite(getArrayIndex(position));
   if (press) {

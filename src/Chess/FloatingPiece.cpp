@@ -10,13 +10,14 @@ FloatingPiece::FloatingPiece(float tile_size) : WorldEntity() {
   m_sprite.setTexture(ResourceManager::get().getTexture("../resources/chess_pieces.png"));
   setPieceInfo({Chess::PieceType::Pawn, Chess::Color::White});
 }
+
 void FloatingPiece::setPieceInfo(Chess::PieceInfo piece_info) {
   m_piece_info = piece_info;
   auto [tex_x, tex_y] = m_sprite.getTexture()->getSize();
   float x = (float) piece_info.type * tex_x / 6.f;
   float y = (float) piece_info.color * tex_y / 2.f;
   m_sprite.setTextureRect(sf::IntRect(x, y, tex_x / 6.f, tex_y / 2.f));
-  m_sprite.setScale(100.f / tex_x * 6.f, 100.f / tex_y *  2.f);
+  m_sprite.setScale(m_tile_size / tex_x * 6.f, m_tile_size / tex_y * 2.f);
   m_sprite.setOrigin(tex_x / 12.f, tex_y / 4.f);
 }
 

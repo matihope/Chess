@@ -9,9 +9,8 @@ namespace Chess {
 class Pawn : public BasePiece {
  public:
   explicit Pawn(Color color);
-  ~Pawn() override;
  private:
-  bool _isMovePossible(Board &board, Position end_pos, const Move *last_move) override;
+  bool _isMovePossible(const Board &board, Position end_pos, const Move *last_move) const override;
 };
 
 }

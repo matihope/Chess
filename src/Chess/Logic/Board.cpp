@@ -84,7 +84,7 @@ Square *Board::getSquareAt(Position position) {
   return getSquareAt(position.file, position.rank);
 }
 
-bool Board::isSquareEmpty(Position position) {
+bool Board::isSquareEmpty(Position position) const {
   return getSquareAt(position)->getPiece() == nullptr;
 }
 

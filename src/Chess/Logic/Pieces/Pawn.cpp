@@ -11,9 +11,7 @@ Pawn::Pawn(Color color) : BasePiece(color) {
   setType(PieceType::Pawn);
 }
 
-Pawn::~Pawn() = default;
-
-bool Pawn::_isMovePossible(Board &board, Position end_pos, const Move *last_move) {
+bool Pawn::_isMovePossible(const Board &board, Position end_pos, const Move *last_move) const {
   Position my_pos = getPosition();
   Color color = getColor();
 

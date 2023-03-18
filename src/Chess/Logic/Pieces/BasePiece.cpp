@@ -30,7 +30,7 @@ Position BasePiece::getPosition() const {
   return getSquare()->getPosition();
 }
 
-std::vector<Position> BasePiece::getAvailableMoves(Board &board, const Move *last_move) {
+std::vector<Position> BasePiece::getAvailableMoves(const Board &board, const Move *last_move) const {
   std::vector<Position> possible_moves;
   for (int x = 0; x < 8; x++) {
     for (int y = 0; y < 8; y++) {
@@ -55,12 +55,12 @@ Square *BasePiece::getSquare() const {
   return m_my_square;
 }
 
-bool BasePiece::_canCapturePos(Board &board, Position end_pos) const {
+bool BasePiece::_canCapturePos(const Board &board, Position end_pos) const {
   if (board.isSquareEmpty(end_pos)) return true;
   return getColor() != board.getPieceAt(end_pos)->getColor();
 }
 
-bool BasePiece::isMovePossible(Board &board, Position end_pos, const Move *last_move) {
+bool BasePiece::isMovePossible(const Board &board, Position end_pos, const Move *last_move) const {
   if (!_canCapturePos(board, end_pos))
     return false;
   return _isMovePossible(board, end_pos, last_move);

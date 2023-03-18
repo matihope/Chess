@@ -3,6 +3,7 @@
 //
 
 #include "Square.hpp"
+#include "Board.hpp"
 
 namespace Chess {
 
@@ -31,6 +32,20 @@ std::unique_ptr<BasePiece> Square::popPiece() {
 
 Position Square::getPosition() const {
   return m_position;
+}
+
+bool Square::isSquareAttackedByColor(const Board &board, Color color) const {
+  Position my_pos = getPosition();
+  for (int x = 0; x < 8; x++) {
+    for (int y = 0; y < 8; y++) {
+      const BasePiece *piece = board.getPieceAt((char) (x + 'A'), y + 1);
+      if (piece == nullptr or piece->getColor() != color)
+        continue;
+      if (piece->isMovePossible(board, my_pos, nullptr))
+        return true;
+    }
+  }
+  return false;
 }
 
 }
