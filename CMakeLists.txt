@@ -5,7 +5,7 @@ add_compile_definitions("DEBUG=$<CONFIG:Debug>")
 
 # SFML
 find_package(SFML 2 REQUIRED COMPONENTS window audio graphics system network)
-link_libraries(sfml-graphics sfml-window sfml-system)
+link_libraries(sfml-graphics sfml-window sfml-system sfml-audio)
 
 # Nlohmann json
 find_package(nlohmann_json 3.11.2 REQUIRED)

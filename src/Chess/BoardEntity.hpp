@@ -9,11 +9,6 @@
 #include <array>
 #include "SpriteBatch/SpriteBatch.hpp"
 
-enum SquareHighlightMode {
-  Default = 0b0,
-
-};
-
 class BoardEntity : public WorldEntity {
  public:
   BoardEntity(int BOARD_SIZE, float TILE_SIZE);
@@ -26,9 +21,6 @@ class BoardEntity : public WorldEntity {
   // level=0 - clear, level=1 - regular available move dot, level=2 - circle around (around a piece)
   void markSquare(Chess::Position position, unsigned int level);
   void clearMark();
-
-  // sets square's color and other visuals to default
-  void setSquaresDefaultColors();
 
  private:
   // board - tiles, pieces - pieces, highlight - a square around

@@ -10,9 +10,8 @@ namespace Chess {
 class Bishop : public BasePiece {
  public:
   explicit Bishop(Color color);
-  ~Bishop() = default;
-  static bool wouldMoveBePossible(Board &board, Position start_pos, Position end_pos);
+  static bool wouldMoveBePossible(const Board &board, Position start_pos, Position end_pos);
  private:
-  bool _isMovePossible(Board &board, Position end_pos, const Move *last_move) override;
+  bool _isMovePossible(const Board &board, Position end_pos, const Move *last_move) const override;
 };
 }

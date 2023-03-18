@@ -5,6 +5,7 @@
 #include <memory>
 #include "Chess/Tile.hpp"
 #include "Game/Game.hpp"
+#include <SFML/Audio.hpp>
 
 ChessScene::ChessScene() : WorldEntity() {
   // create board representation
@@ -26,6 +27,7 @@ ChessScene::ChessScene() : WorldEntity() {
     }
   }
   reloadBoardPieces();
+  playSound("start");
 }
 
 void ChessScene::onUpdate(float dt) {
@@ -35,9 +37,14 @@ void ChessScene::onUpdate(float dt) {
     if (tile->contains(mouse_pos) and not m_chess_game.isSquareEmpty(tile->getPosition()))
       new_cursor_type = sf::Cursor::Hand;
 
+    // on tile click
     if (tile->isPressed()) {
       Chess::Position position = tile->getPosition();
-      bool made_a_move = makeMove(m_held_piece_position, position);
+      bool made_a_move = false;
+      if (m_chess_game.isMovePossible(m_held_piece_position, position)) {
+        made_a_move = true;
+        makeMove(m_held_piece_position, position);
+      }
       if (not made_a_move and not m_chess_game.isSquareEmpty(position)) {
         // mark available moves
         m_board_entity->clearMark();
@@ -59,7 +66,7 @@ void ChessScene::onUpdate(float dt) {
         std::cout << m_held_piece_position.file << m_held_piece_position.rank << " "
                   << m_chess_game.getPieceAt(m_held_piece_position)->getMoveCount() << '\n';
       } else {
-        _reloadBoardEffects();
+        reloadBoardEffects();
       }
     }
   }
@@ -121,27 +128,41 @@ void ChessScene::handleEvent(const sf::Event &event) {
 }
 
 bool ChessScene::undoLastMove() {
+  playMoveSound();
   bool undid = m_chess_game.undoLastMove();
   if (undid)
-    _reloadBoardEffects();
+    reloadBoardEffects();
   return undid;
 }
 
 bool ChessScene::redoLastMove() {
   bool redid = m_chess_game.redoLastMove();
-  if (redid)
-    _reloadBoardEffects();
+  if (redid) {
+    reloadBoardEffects();
+    playMoveSound();
+  }
   return redid;
 }
 
 bool ChessScene::makeMove(Chess::Position start, Chess::Position end) {
+  if (start == end)
+    return false;
+
   bool made_a_move = m_chess_game.makeMove(start, end);
-  if (made_a_move)
-    _reloadBoardEffects();
+  if (made_a_move) {
+    reloadBoardEffects();
+    playMoveSound();
+  } else {
+    bool white_checked = m_chess_game.isKingChecked(Chess::Color::White);
+    bool black_checked = m_chess_game.isKingChecked(Chess::Color::Black);
+    if (white_checked or black_checked) {
+      playSound("king_alert");
+    }
+  }
   return made_a_move;
 }
 
-void ChessScene::_reloadBoardEffects() {
+void ChessScene::reloadBoardEffects() {
   m_board_entity->clearPress();
   m_board_entity->clearMark();
   auto last_move = m_chess_game.getLastMove();
@@ -151,4 +172,25 @@ void ChessScene::_reloadBoardEffects() {
   }
   reloadBoardPieces();
 
+}
+
+void ChessScene::playMoveSound() {
+  if (m_chess_game.getLastMove() == nullptr)
+    return;
+
+  bool has_captured_a_piece = m_chess_game.getLastMove()->hasCapturedPiece();
+  bool check = m_chess_game.isKingChecked(Chess::Color::White) or m_chess_game.isKingChecked(Chess::Color::Black);
+
+  std::string to_play = "move";
+  if (has_captured_a_piece)
+    to_play = "capture";
+  if (check)
+    to_play = "check";
+
+  playSound(to_play);
+}
+
+void ChessScene::playSound(const std::string &name) {
+  m_sound.setBuffer(ResourceManager::get().getSoundBuffer("../resources/sounds/" + name + ".wav"));
+  m_sound.play();
 }

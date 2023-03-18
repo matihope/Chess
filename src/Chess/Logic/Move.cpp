@@ -14,6 +14,7 @@ Move::Move(Position start, Position end, PieceInfo info) {
   m_captured_piece_info = {PieceType::Pawn, Color::White};
   m_captured_piece_position = Position('A', 1);
   m_captured_piece_move_count = 0;
+  m_is_castling = false;
 }
 
 PieceInfo Move::getInfo() const {
@@ -61,6 +62,14 @@ Position Move::getCapturedPiecePosition() const {
 
 unsigned int Move::getCapturedPieceMoveCount() const {
   return m_captured_piece_move_count;
+}
+
+bool Move::isCastling() const {
+  return m_is_castling;
+}
+
+void Move::setCastling() {
+  m_is_castling = true;
 }
 
 }

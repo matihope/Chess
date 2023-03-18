@@ -27,3 +27,10 @@ const sf::Cursor &ResourceManager::getSystemCursor(sf::Cursor::Type type) {
   }
   return m_system_cursors[type];
 }
+
+const sf::SoundBuffer &ResourceManager::getSoundBuffer(const std::string &path) {
+  if (!m_sound_buffers.contains(path)) {
+    m_sound_buffers[path].loadFromFile(path);
+  }
+  return m_sound_buffers[path];
+}

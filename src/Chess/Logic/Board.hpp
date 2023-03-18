@@ -19,7 +19,7 @@ class Board {
   [[nodiscard]] Square *getSquareAt(char file, uint rank);
   [[nodiscard]] BasePiece *getPieceAt(Position position);
   [[nodiscard]] BasePiece *getPieceAt(char file, uint rank);
-  bool isSquareEmpty(Position position);
+  [[nodiscard]] bool isSquareEmpty(Position position) const;
 
  private:
   std::array<std::array<Square, 8>, 8> m_board;

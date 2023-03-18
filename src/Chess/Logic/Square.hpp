@@ -18,6 +18,7 @@ class Square {
   std::unique_ptr<BasePiece> popPiece();
   void setPiece(std::unique_ptr<BasePiece> piece);
   [[nodiscard]] BasePiece *getPiece() const;
+  [[nodiscard]] bool isSquareAttackedByColor(const Board &board, Color color) const;
 
  private:
   std::unique_ptr<BasePiece> m_piece;

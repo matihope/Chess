@@ -37,11 +37,11 @@ class BasePiece {
 
  protected:
   // returns true if end_pos is free or has a piece of different color than getColor()
-  bool _canCapturePos(Board &board, Position end_pos) const;
+  [[nodiscard]] bool _canCapturePos(const Board &board, Position end_pos) const;
 
   // should implement the piece's regular behaviour
   // not king-check and other things, because they are checked in public isMovePossible
-  virtual bool _isMovePossible(Board &board, Position end_pos, const Move *last_move) = 0;
+  virtual bool _isMovePossible(const Board &board, Position end_pos, const Move *last_move) const = 0;
 
  public:
   explicit BasePiece(Color color);
@@ -60,10 +60,10 @@ class BasePiece {
 
   // returns all possible moves of the piece
   // last_move is the last move performed on the board = null if there were none
-  std::vector<Position> getAvailableMoves(Board &board, const Move *last_move);
+  [[nodiscard]] std::vector<Position> getAvailableMoves(const Board &board, const Move *last_move) const;
   // returns true if the piece can move to the end_pos
   // last_move is the last move performed on the board = null if there were none
-  bool isMovePossible(Board &board, Position end_pos, const Move *last_move);
+  [[nodiscard]] bool isMovePossible(const Board &board, Position end_pos, const Move *last_move) const;
 
   [[nodiscard]] PieceInfo getInfo() const;
 };

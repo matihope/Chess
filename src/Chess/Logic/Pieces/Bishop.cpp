@@ -9,11 +9,11 @@ Chess::Bishop::Bishop(Chess::Color color) : BasePiece(color) {
   setType(PieceType::Bishop);
 }
 
-bool Chess::Bishop::_isMovePossible(Board &board, Position end_pos, const Move *last_move) {
+bool Chess::Bishop::_isMovePossible(const Board &board, Position end_pos, const Move *last_move) const {
   return wouldMoveBePossible(board, getPosition(), end_pos);
 }
 
-bool Chess::Bishop::wouldMoveBePossible(Chess::Board &board, Chess::Position start_pos, Chess::Position end_pos) {
+bool Chess::Bishop::wouldMoveBePossible(const Chess::Board &board, Chess::Position start_pos, Chess::Position end_pos) {
   int diff_x = abs(end_pos.file - start_pos.file);
   int diff_y = abs(end_pos.rank - start_pos.rank);
   if (diff_x != diff_y)

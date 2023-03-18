@@ -18,7 +18,7 @@ void Chess::Game::newGame() {
 }
 
 bool Chess::Game::makeMove(Chess::Position start, Chess::Position end) {
-  BasePiece *piece_at_start = m_board.getPieceAt(start);
+  const BasePiece *piece_at_start = m_board.getPieceAt(start);
   const Move *last_move = getLastMove();
 
   // check if move is possible
@@ -71,6 +71,24 @@ bool Chess::Game::makeMove(Chess::Position start, Chess::Position end) {
     }
   }
 
+  // if a king has just castled, then move a rook as well
+  if (piece_at_start->getType() == PieceType::King) {
+    if (abs(start.file - end.file) == 2) {
+      // we are performing a castling
+      Position rook_start, rook_end;
+      if (end.file == 'C') {
+        rook_start = {'A', end.rank};
+        rook_end = {'D', end.rank};
+      } else {
+        rook_start = {'H', end.rank};
+        rook_end = {'F', end.rank};
+      }
+      _movePiece(rook_start, rook_end);
+      m_board.getPieceAt(rook_end)->increaseMoveCounter();
+      m_moves.back().setCastling();
+    }
+  }
+
   if (isKingChecked(piece_info.color)) {
     undoLastMove();
     // so that the move is not tracked in the history
@@ -119,6 +137,23 @@ bool Chess::Game::undoLastMove() {
   auto last_move = m_moves.back();
   m_undid_moves.push_back(last_move);
   m_moves.pop_back();
+
+  if (last_move.isCastling()) {
+    if (last_move.getEnd().file == 'C' or last_move.getEnd().file == 'G') {
+      auto end = last_move.getEnd();
+      Position rook_start, rook_end;
+      if (end.file == 'C') {
+        rook_start = {'D', end.rank};
+        rook_end = {'A', end.rank};
+      } else {
+        rook_start = {'F', end.rank};
+        rook_end = {'H', end.rank};
+      }
+      _movePiece(rook_start, rook_end);
+      m_board.getPieceAt(rook_end)->decreaseMoveCounter();
+    }
+  }
+
   _movePiece(last_move.getEnd(), last_move.getStart());
   m_board.getPieceAt(last_move.getStart())->decreaseMoveCounter();
 
@@ -134,6 +169,7 @@ bool Chess::Game::undoLastMove() {
     m_board.createNewPieceAt(last_move.getCapturedPiecePosition(),
                              last_move.getCapturedPieceInfo(),
                              last_move.getCapturedPieceMoveCount());
+
   _flipTurn();
   return true;
 }
@@ -183,24 +219,9 @@ std::unique_ptr<Chess::BasePiece> Chess::Game::_movePiece(Chess::Position start,
 }
 
 bool Chess::Game::isKingChecked(Chess::Color kingsColor) {
-  for (int x = 0; x < 8; x++) {
-    for (int y = 0; y < 8; y++) {
-      Position position((char) (x + 'A'), y + 1);
-      auto piece = m_board.getPieceAt(position);
-      if (not m_board.isSquareEmpty(position) and piece->getColor() != kingsColor) {
-        auto possible_moves = piece->getAvailableMoves(m_board, getLastMove());
-        for (auto move : possible_moves) {
-          if (kingsColor == Color::White) {
-            if (m_white_king->getPosition() == move)
-              return true;
-          }
-          if (kingsColor == Color::Black) {
-            if (m_black_king->getPosition() == move)
-              return true;
-          }
-        }
-      }
-    }
+  if (kingsColor == Color::White) {
+    return m_board.getSquareAt(m_white_king->getPosition())->isSquareAttackedByColor(m_board, Color::Black);
+  } else {
+    return m_board.getSquareAt(m_black_king->getPosition())->isSquareAttackedByColor(m_board, Color::White);
   }
-  return false;
 }

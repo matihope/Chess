@@ -12,9 +12,9 @@ class Rook : public BasePiece {
   explicit Rook(Color color);
 
   // last_move is here just to be consistent with piece's function arguments
-  static bool wouldMoveBePossible(Board &board, Position start_pos, Position end_pos, const Move *last_move);
+  static bool wouldMoveBePossible(const Board &board, Position start_pos, Position end_pos, const Move *last_move);
  protected:
-  bool _isMovePossible(Board &board, Position end_pos, const Move *last_move) override;
+  bool _isMovePossible(const Board &board, Position end_pos, const Move *last_move) const override;
 
 };
 }
