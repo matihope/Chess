@@ -15,6 +15,7 @@ ChessScene::ChessScene() : WorldEntity() {
   // create floating piece
   m_floating_piece = addChild<FloatingPiece>(TILE_SIZE);
   m_floating_piece->hide();
+  m_is_piece_selected = false;
 
   // load clicky tiles
   for (int x = 0; x < 8; ++x) {
@@ -41,18 +42,13 @@ void ChessScene::onUpdate(float dt) {
     if (tile->isPressed()) {
       Chess::Position position = tile->getPosition();
       bool made_a_move = false;
-      if (m_chess_game.isMovePossible(m_held_piece_position, position)) {
+      if (m_is_piece_selected and m_chess_game.isMovePossible(m_held_piece_position, position)) {
         made_a_move = true;
         makeMove(m_held_piece_position, position);
       }
       if (not made_a_move and not m_chess_game.isSquareEmpty(position)) {
         // mark available moves
-        m_board_entity->clearMark();
-        for (auto move : m_chess_game.getAvailableMovesAt(position)) {
-          m_board_entity->markSquare(move.getEnd(), 1);
-          if (not m_chess_game.isSquareEmpty(move.getEnd()))
-            m_board_entity->markSquare(move.getEnd(), 2);
-        }
+        applyBoardMarks(m_chess_game.getAvailableMovesAt(position));
         // start dragging a piece
         reloadBoardPieces();
         m_board_entity->clearSquare(position);
@@ -63,9 +59,9 @@ void ChessScene::onUpdate(float dt) {
 
         m_board_entity->pressSquare(position, true);
         m_held_piece_position = position;
-        std::cout << m_held_piece_position.file << m_held_piece_position.rank << " "
-                  << m_chess_game.getPieceAt(m_held_piece_position)->getMoveCount() << '\n';
+        m_is_piece_selected = true;
       } else {
+        m_is_piece_selected = false;
         reloadBoardEffects();
       }
     }
@@ -147,6 +143,7 @@ bool ChessScene::redoLastMove() {
 bool ChessScene::makeMove(Chess::Position start, Chess::Position end) {
   if (start == end)
     return false;
+  m_is_piece_selected = false;
 
   bool made_a_move = m_chess_game.makeMove(start, end);
   if (made_a_move) {
@@ -179,12 +176,13 @@ void ChessScene::playMoveSound() {
     return;
 
   bool has_captured_a_piece = m_chess_game.getLastMove()->hasCapturedPiece();
-  bool check = m_chess_game.isKingChecked(Chess::Color::White) or m_chess_game.isKingChecked(Chess::Color::Black);
+  bool white_checked = m_chess_game.isKingChecked(Chess::Color::White);
+  bool black_checked = m_chess_game.isKingChecked(Chess::Color::Black);
 
   std::string to_play = "move";
   if (has_captured_a_piece)
     to_play = "capture";
-  if (check)
+  if (white_checked or black_checked)
     to_play = "check";
 
   playSound(to_play);
@@ -193,4 +191,13 @@ void ChessScene::playMoveSound() {
 void ChessScene::playSound(const std::string &name) {
   m_sound.setBuffer(ResourceManager::get().getSoundBuffer("../resources/sounds/" + name + ".wav"));
   m_sound.play();
+}
+
+void ChessScene::applyBoardMarks(const std::vector<Chess::Position> &moves) {
+  m_board_entity->clearMark();
+  for (auto move : moves) {
+    m_board_entity->markSquare(move, 1);
+    if (not m_chess_game.isSquareEmpty(move))
+      m_board_entity->markSquare(move, 2);
+  }
 }

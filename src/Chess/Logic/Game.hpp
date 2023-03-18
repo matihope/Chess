@@ -12,7 +12,7 @@ class Game {
  public:
   Game();
   void newGame();
-  std::vector<Move> getAvailableMovesAt(Position position);
+  std::vector<Chess::Position> getAvailableMovesAt(Position position);
   bool isMovePossible(Position start, Position end);
   bool isSquareEmpty(Position position);
   [[nodiscard]] const Move *getLastMove() const;

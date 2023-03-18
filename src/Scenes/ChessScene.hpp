@@ -22,6 +22,7 @@ class ChessScene : public WorldEntity {
   std::array<Tile *, 64> m_tiles;
   FloatingPiece *m_floating_piece;
   Chess::Position m_held_piece_position;
+  bool m_is_piece_selected;
   sf::Sound m_sound;
 
   void reloadBoardPieces();
@@ -31,6 +32,7 @@ class ChessScene : public WorldEntity {
   bool undoLastMove();
   bool redoLastMove();
   void reloadBoardEffects();
+  void applyBoardMarks(const std::vector<Chess::Position> &moves);
   void playSound(const std::string &name);
   void playMoveSound();
 };

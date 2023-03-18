@@ -105,13 +105,13 @@ const Chess::BasePiece *Chess::Game::getPieceAt(Chess::Position pos) const {
 
 bool Chess::Game::isMovePossible(Chess::Position start, Chess::Position end) {
   BasePiece *piece = m_board.getPieceAt(start);
-  if (piece == nullptr)
+  if (piece == nullptr or piece->getColor() != m_turn)
     return false;
 
   return piece->isMovePossible(m_board, end, getLastMove());
 }
 
-std::vector<Chess::Move> Chess::Game::getAvailableMovesAt(Chess::Position position) {
+std::vector<Chess::Position> Chess::Game::getAvailableMovesAt(Chess::Position position) {
   BasePiece *piece = m_board.getPieceAt(position);
   if (piece == nullptr)
     return {};
@@ -119,12 +119,7 @@ std::vector<Chess::Move> Chess::Game::getAvailableMovesAt(Chess::Position positi
   if (piece->getColor() != m_turn)
     return {};
 
-  std::vector<Move> possible_moves;
-  for (const Position end_pos : piece->getAvailableMoves(m_board, getLastMove())) {
-    if (isMoveKingSafe(position, end_pos))
-      possible_moves.emplace_back(position, end_pos, piece->getInfo());
-  }
-  return possible_moves;
+  return piece->getAvailableMoves(m_board, getLastMove());
 }
 
 bool Chess::Game::isSquareEmpty(Chess::Position position) {
