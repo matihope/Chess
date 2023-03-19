@@ -5,7 +5,7 @@ Fully functional game of chess written in C++ and SFML (2.5.1).
 Controls are simple - press a square and drag a piece or press on another square to move.
 LeftArrow to undo a move, RightArrow to redo.
 
-![A screenshot from the game](/home/mateusz/code/sfml/chess/resources/screenshot.png)
+![A screenshot from the game](./resources/screenshot.png)
 
 Build it yourself:
 
