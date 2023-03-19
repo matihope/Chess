@@ -184,6 +184,8 @@ void ChessScene::playMoveSound() {
     to_play = "capture";
   if (white_checked or black_checked)
     to_play = "check";
+  if (m_chess_game.isGameOver())
+    to_play = "checkmate";
 
   playSound(to_play);
 }
