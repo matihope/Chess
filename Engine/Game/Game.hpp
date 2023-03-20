@@ -51,6 +51,7 @@ class Game {
   sf::Vector2u getWindowSize();
   sf::Vector2u getViewportSize();
   sf::RenderWindow &getRenderWindow();
+  bool isWindowActive() const;
   void updateViewportSize();
   void addScene(std::unique_ptr<WorldEntity> newScene);
   void replaceTopScene(std::unique_ptr<WorldEntity> newScene);

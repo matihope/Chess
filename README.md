@@ -16,9 +16,10 @@ Build it yourself:
        ``` 
     * Debian / Ubuntu:
       ```shell
-      sudo apt-get install cmake libsfml-dev nlohmann-json-dev
+      sudo apt-get install cmake libsfml-dev nlohmann-json3-dev
+      ```
 
-1. Build project and run:
+2. Build project and run:
 
 ```shell
 bash -c "git clone https://github.com/matihope/Chess.git &&\

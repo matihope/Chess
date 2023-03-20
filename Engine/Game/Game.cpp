@@ -181,3 +181,7 @@ void Game::setCursor(sf::Cursor::Type type) {
 
   getRenderWindow().setMouseCursor(ResourceManager::get().getSystemCursor(type));
 }
+
+bool Game::isWindowActive() const {
+  return m_window.hasFocus();
+}

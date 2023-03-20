@@ -15,6 +15,7 @@ Clickable::~Clickable() = default;
 
 void Clickable::update(float dt) {
   if (!m_collision_shape) return;
+  if (!Game::get().isWindowActive()) return;
   sf::Vector2f mousePos = Game::get().getMousePos();
   m_is_held = false;
   m_is_pressed = false;
