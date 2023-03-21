@@ -22,7 +22,7 @@ Build it yourself:
 2. Build project and run:
 
 ```shell
-bash -c "git clone https://github.com/matihope/Chess.git &&\
+bash -c "git clone https://github.com/matihope/Chess.git && \
     cd Chess && \
     cmake -B build && \
     cd build && \
